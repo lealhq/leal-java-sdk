@@ -2,10 +2,19 @@
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Flealhq%2Fleal-java-sdk)
 
-The Leal Java library provides convenient access to the Leal APIs from Java.
+Digital loyalty stamp cards in Apple Wallet and Google Wallet, for local
+businesses. This library covers the whole [Leal](https://www.getleal.com)
+API, so you can enrol customers, add stamps, redeem rewards and read a
+card's wallet links from your own application.
+
+- Guides and a page for every language: [www.getleal.com/developers](https://www.getleal.com/developers)
+- Create an API token: [app.getleal.com/api_tokens](https://app.getleal.com/api_tokens)
+- The OpenAPI description these libraries are built from: [www.getleal.com/openapi.json](https://www.getleal.com/openapi.json)
+
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Reference](#reference)
 - [Usage](#usage)
 - [Environments](#environments)
@@ -19,6 +28,10 @@ The Leal Java library provides convenient access to the Leal APIs from Java.
   - [Access Raw Response Data](#access-raw-response-data)
 - [Contributing](#contributing)
 
+## Documentation
+
+API reference documentation is available [here](https://app.getleal.com/docs/api.html).
+
 ## Reference
 
 A full reference for this library is available [here](https://github.com/lealhq/leal-java-sdk/blob/HEAD/./reference.md).
@@ -31,8 +44,7 @@ Instantiate and use the client with the following:
 package com.example.usage;
 
 import com.getleal.api.Leal;
-import com.getleal.api.resources.cards.requests.CreateCardsRequest;
-import com.getleal.api.resources.cards.types.CreateCardsRequestCard;
+import com.getleal.api.resources.customercards.requests.StampCustomerCardsRequest;
 
 public class Example {
     public static void main(String[] args) {
@@ -41,16 +53,13 @@ public class Example {
             .token("<token>")
             .build();
 
-        client.cards().create(
+        client.customerCards().stamp(
             1,
-            CreateCardsRequest
+            1,
+            1,
+            StampCustomerCardsRequest
                 .builder()
-                .card(
-                    CreateCardsRequestCard
-                        .builder()
-                        .name("name")
-                        .build()
-                )
+                .stamps(1)
                 .build()
         );
     }
@@ -92,7 +101,7 @@ When the API returns a non-success status code (4xx or 5xx response), an API exc
 import com.getleal.api.core.LealApiException;
 
 try{
-    client.cards().create(...);
+    client.customerCards().stamp(...);
 } catch (LealApiException e){
     // Do something with the API exception...
 }
@@ -164,7 +173,7 @@ Leal client = Leal
     .build();
 
 // Request level
-client.cards().create(
+client.customerCards().stamp(
     ...,
     RequestOptions
         .builder()
@@ -190,7 +199,7 @@ Leal client = Leal
 ;
 
 // Request level
-client.cards().create(
+client.customerCards().stamp(
     ...,
     RequestOptions
         .builder()
@@ -206,7 +215,7 @@ The `withRawResponse()` method returns a raw client that wraps all responses wit
 (A normal client's `response` is identical to a raw client's `response.body()`.)
 
 ```java
-LealHttpResponse response = client.cards().withRawResponse().create(...);
+LealHttpResponse response = client.customerCards().withRawResponse().stamp(...);
 
 System.out.println(response.body());
 System.out.println(response.headers().get("X-My-Header"));
