@@ -11,6 +11,7 @@ import com.getleal.api.core.LealHttpResponse;
 import com.getleal.api.core.ObjectMappers;
 import com.getleal.api.core.RequestOptions;
 import com.getleal.api.core.RetryInterceptor;
+import com.getleal.api.errors.GoneError;
 import com.getleal.api.errors.TooManyRequestsError;
 import com.getleal.api.resources.status.types.CheckStatusResponse;
 import com.getleal.api.types.Error;
@@ -81,9 +82,13 @@ public class RawStatusClient {
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CheckStatusResponse.class), response);
             }
             try {
-                if (response.code() == 429) {
-                    throw new TooManyRequestsError(
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                switch (response.code()) {
+                    case 410:
+                        throw new GoneError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 429:
+                        throw new TooManyRequestsError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error

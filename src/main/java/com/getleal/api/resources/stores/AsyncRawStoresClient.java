@@ -13,6 +13,7 @@ import com.getleal.api.core.MediaTypes;
 import com.getleal.api.core.ObjectMappers;
 import com.getleal.api.core.RequestOptions;
 import com.getleal.api.core.RetryInterceptor;
+import com.getleal.api.errors.GoneError;
 import com.getleal.api.errors.NotFoundError;
 import com.getleal.api.errors.TooManyRequestsError;
 import com.getleal.api.errors.UnauthorizedError;
@@ -99,6 +100,11 @@ public class AsyncRawStoresClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
+                                        response));
+                                return;
+                            case 410:
+                                future.completeExceptionally(new GoneError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
                                         response));
                                 return;
@@ -209,6 +215,11 @@ public class AsyncRawStoresClient {
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
                                         response));
                                 return;
+                            case 410:
+                                future.completeExceptionally(new GoneError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
+                                        response));
+                                return;
                             case 429:
                                 future.completeExceptionally(new TooManyRequestsError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
@@ -307,6 +318,11 @@ public class AsyncRawStoresClient {
                                 return;
                             case 404:
                                 future.completeExceptionally(new NotFoundError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
+                                        response));
+                                return;
+                            case 410:
+                                future.completeExceptionally(new GoneError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class),
                                         response));
                                 return;

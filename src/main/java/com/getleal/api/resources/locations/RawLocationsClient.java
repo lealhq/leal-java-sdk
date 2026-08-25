@@ -13,6 +13,7 @@ import com.getleal.api.core.MediaTypes;
 import com.getleal.api.core.ObjectMappers;
 import com.getleal.api.core.RequestOptions;
 import com.getleal.api.core.RetryInterceptor;
+import com.getleal.api.errors.GoneError;
 import com.getleal.api.errors.NotFoundError;
 import com.getleal.api.errors.TooManyRequestsError;
 import com.getleal.api.errors.UnauthorizedError;
@@ -116,6 +117,9 @@ public class RawLocationsClient {
                     case 404:
                         throw new NotFoundError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 410:
+                        throw new GoneError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 429:
                         throw new TooManyRequestsError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
@@ -199,6 +203,9 @@ public class RawLocationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 404:
                         throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 410:
+                        throw new GoneError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
@@ -291,6 +298,9 @@ public class RawLocationsClient {
                     case 404:
                         throw new NotFoundError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 410:
+                        throw new GoneError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 429:
                         throw new TooManyRequestsError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
@@ -378,6 +388,9 @@ public class RawLocationsClient {
                     case 404:
                         throw new NotFoundError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 410:
+                        throw new GoneError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 429:
                         throw new TooManyRequestsError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
@@ -460,6 +473,9 @@ public class RawLocationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 404:
                         throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
+                    case 410:
+                        throw new GoneError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Error.class), response);
                     case 422:
                         throw new UnprocessableEntityError(

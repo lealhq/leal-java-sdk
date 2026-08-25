@@ -33,6 +33,8 @@ public final class CheckStatusResponse {
 
     private final String status;
 
+    private final CheckStatusResponseVersioning versioning;
+
     private final Map<String, Object> additionalProperties;
 
     private CheckStatusResponse(
@@ -43,6 +45,7 @@ public final class CheckStatusResponse {
             String openapiUrl,
             CheckStatusResponseRateLimit rateLimit,
             String status,
+            CheckStatusResponseVersioning versioning,
             Map<String, Object> additionalProperties) {
         this.apiVersion = apiVersion;
         this.authentication = authentication;
@@ -51,6 +54,7 @@ public final class CheckStatusResponse {
         this.openapiUrl = openapiUrl;
         this.rateLimit = rateLimit;
         this.status = status;
+        this.versioning = versioning;
         this.additionalProperties = additionalProperties;
     }
 
@@ -107,6 +111,11 @@ public final class CheckStatusResponse {
         return status;
     }
 
+    @JsonProperty("versioning")
+    public CheckStatusResponseVersioning getVersioning() {
+        return versioning;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -125,7 +134,8 @@ public final class CheckStatusResponse {
                 && documentationUrl.equals(other.documentationUrl)
                 && openapiUrl.equals(other.openapiUrl)
                 && rateLimit.equals(other.rateLimit)
-                && status.equals(other.status);
+                && status.equals(other.status)
+                && versioning.equals(other.versioning);
     }
 
     @java.lang.Override
@@ -137,7 +147,8 @@ public final class CheckStatusResponse {
                 this.documentationUrl,
                 this.openapiUrl,
                 this.rateLimit,
-                this.status);
+                this.status,
+                this.versioning);
     }
 
     @java.lang.Override
@@ -194,7 +205,11 @@ public final class CheckStatusResponse {
         /**
          * <p>'ok' while the API is serving requests</p>
          */
-        _FinalStage status(@NotNull String status);
+        VersioningStage status(@NotNull String status);
+    }
+
+    public interface VersioningStage {
+        _FinalStage versioning(@NotNull CheckStatusResponseVersioning versioning);
     }
 
     public interface _FinalStage {
@@ -214,6 +229,7 @@ public final class CheckStatusResponse {
                     OpenapiUrlStage,
                     RateLimitStage,
                     StatusStage,
+                    VersioningStage,
                     _FinalStage {
         private String apiVersion;
 
@@ -229,6 +245,8 @@ public final class CheckStatusResponse {
 
         private String status;
 
+        private CheckStatusResponseVersioning versioning;
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -243,6 +261,7 @@ public final class CheckStatusResponse {
             openapiUrl(other.getOpenapiUrl());
             rateLimit(other.getRateLimit());
             status(other.getStatus());
+            versioning(other.getVersioning());
             return this;
         }
 
@@ -314,8 +333,15 @@ public final class CheckStatusResponse {
          */
         @java.lang.Override
         @JsonSetter("status")
-        public _FinalStage status(@NotNull String status) {
+        public VersioningStage status(@NotNull String status) {
             this.status = Objects.requireNonNull(status, "status must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("versioning")
+        public _FinalStage versioning(@NotNull CheckStatusResponseVersioning versioning) {
+            this.versioning = Objects.requireNonNull(versioning, "versioning must not be null");
             return this;
         }
 
@@ -329,6 +355,7 @@ public final class CheckStatusResponse {
                     openapiUrl,
                     rateLimit,
                     status,
+                    versioning,
                     additionalProperties);
         }
 
