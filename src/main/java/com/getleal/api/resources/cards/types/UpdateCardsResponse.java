@@ -9,9 +9,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.getleal.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +24,15 @@ import org.jetbrains.annotations.NotNull;
 public final class UpdateCardsResponse {
     private final String archivedAt;
 
+    private final List<String> auxiliaryFields;
+
     private final String cardColor;
 
     private final String createdAt;
 
     private final int customerCardsCount;
+
+    private final String expiresAt;
 
     private final String headerText;
 
@@ -36,6 +43,10 @@ public final class UpdateCardsResponse {
     private final String name;
 
     private final int rewardsCount;
+
+    private final boolean showMemberField;
+
+    private final boolean showStampsToRewardField;
 
     private final String stampBackgroundColor;
 
@@ -59,14 +70,18 @@ public final class UpdateCardsResponse {
 
     private UpdateCardsResponse(
             String archivedAt,
+            List<String> auxiliaryFields,
             String cardColor,
             String createdAt,
             int customerCardsCount,
+            String expiresAt,
             String headerText,
             int id,
             int initialStamps,
             String name,
             int rewardsCount,
+            boolean showMemberField,
+            boolean showStampsToRewardField,
             String stampBackgroundColor,
             String stampColor,
             String stampIcon,
@@ -78,14 +93,18 @@ public final class UpdateCardsResponse {
             String updatedAt,
             Map<String, Object> additionalProperties) {
         this.archivedAt = archivedAt;
+        this.auxiliaryFields = auxiliaryFields;
         this.cardColor = cardColor;
         this.createdAt = createdAt;
         this.customerCardsCount = customerCardsCount;
+        this.expiresAt = expiresAt;
         this.headerText = headerText;
         this.id = id;
         this.initialStamps = initialStamps;
         this.name = name;
         this.rewardsCount = rewardsCount;
+        this.showMemberField = showMemberField;
+        this.showStampsToRewardField = showStampsToRewardField;
         this.stampBackgroundColor = stampBackgroundColor;
         this.stampColor = stampColor;
         this.stampIcon = stampIcon;
@@ -104,6 +123,14 @@ public final class UpdateCardsResponse {
     @JsonProperty("archived_at")
     public String getArchivedAt() {
         return archivedAt;
+    }
+
+    /**
+     * @return Up to two extra front-of-pass fields
+     */
+    @JsonProperty("auxiliary_fields")
+    public List<String> getAuxiliaryFields() {
+        return auxiliaryFields;
     }
 
     /**
@@ -128,6 +155,14 @@ public final class UpdateCardsResponse {
     @JsonProperty("customer_cards_count")
     public int getCustomerCardsCount() {
         return customerCardsCount;
+    }
+
+    /**
+     * @return ISO 8601 timestamp when the card expires, or null if it does not expire
+     */
+    @JsonProperty("expires_at")
+    public String getExpiresAt() {
+        return expiresAt;
     }
 
     /**
@@ -168,6 +203,22 @@ public final class UpdateCardsResponse {
     @JsonProperty("rewards_count")
     public int getRewardsCount() {
         return rewardsCount;
+    }
+
+    /**
+     * @return Whether wallet passes show the member name field
+     */
+    @JsonProperty("show_member_field")
+    public boolean getShowMemberField() {
+        return showMemberField;
+    }
+
+    /**
+     * @return Whether wallet passes show the stamps-to-reward field
+     */
+    @JsonProperty("show_stamps_to_reward_field")
+    public boolean getShowStampsToRewardField() {
+        return showStampsToRewardField;
     }
 
     /**
@@ -255,14 +306,18 @@ public final class UpdateCardsResponse {
 
     private boolean equalTo(UpdateCardsResponse other) {
         return archivedAt.equals(other.archivedAt)
+                && auxiliaryFields.equals(other.auxiliaryFields)
                 && cardColor.equals(other.cardColor)
                 && createdAt.equals(other.createdAt)
                 && customerCardsCount == other.customerCardsCount
+                && expiresAt.equals(other.expiresAt)
                 && headerText.equals(other.headerText)
                 && id == other.id
                 && initialStamps == other.initialStamps
                 && name.equals(other.name)
                 && rewardsCount == other.rewardsCount
+                && showMemberField == other.showMemberField
+                && showStampsToRewardField == other.showStampsToRewardField
                 && stampBackgroundColor.equals(other.stampBackgroundColor)
                 && stampColor.equals(other.stampColor)
                 && stampIcon.equals(other.stampIcon)
@@ -278,14 +333,18 @@ public final class UpdateCardsResponse {
     public int hashCode() {
         return Objects.hash(
                 this.archivedAt,
+                this.auxiliaryFields,
                 this.cardColor,
                 this.createdAt,
                 this.customerCardsCount,
+                this.expiresAt,
                 this.headerText,
                 this.id,
                 this.initialStamps,
                 this.name,
                 this.rewardsCount,
+                this.showMemberField,
+                this.showStampsToRewardField,
                 this.stampBackgroundColor,
                 this.stampColor,
                 this.stampIcon,
@@ -333,7 +392,14 @@ public final class UpdateCardsResponse {
         /**
          * <p>Number of customer card instances issued</p>
          */
-        HeaderTextStage customerCardsCount(int customerCardsCount);
+        ExpiresAtStage customerCardsCount(int customerCardsCount);
+    }
+
+    public interface ExpiresAtStage {
+        /**
+         * <p>ISO 8601 timestamp when the card expires, or null if it does not expire</p>
+         */
+        HeaderTextStage expiresAt(@NotNull String expiresAt);
     }
 
     public interface HeaderTextStage {
@@ -368,7 +434,21 @@ public final class UpdateCardsResponse {
         /**
          * <p>Number of rewards defined for this card</p>
          */
-        StampBackgroundColorStage rewardsCount(int rewardsCount);
+        ShowMemberFieldStage rewardsCount(int rewardsCount);
+    }
+
+    public interface ShowMemberFieldStage {
+        /**
+         * <p>Whether wallet passes show the member name field</p>
+         */
+        ShowStampsToRewardFieldStage showMemberField(boolean showMemberField);
+    }
+
+    public interface ShowStampsToRewardFieldStage {
+        /**
+         * <p>Whether wallet passes show the stamps-to-reward field</p>
+         */
+        StampBackgroundColorStage showStampsToRewardField(boolean showStampsToRewardField);
     }
 
     public interface StampBackgroundColorStage {
@@ -440,6 +520,15 @@ public final class UpdateCardsResponse {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>Up to two extra front-of-pass fields</p>
+         */
+        _FinalStage auxiliaryFields(List<String> auxiliaryFields);
+
+        _FinalStage addAuxiliaryFields(String auxiliaryFields);
+
+        _FinalStage addAllAuxiliaryFields(List<String> auxiliaryFields);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -448,11 +537,14 @@ public final class UpdateCardsResponse {
                     CardColorStage,
                     CreatedAtStage,
                     CustomerCardsCountStage,
+                    ExpiresAtStage,
                     HeaderTextStage,
                     IdStage,
                     InitialStampsStage,
                     NameStage,
                     RewardsCountStage,
+                    ShowMemberFieldStage,
+                    ShowStampsToRewardFieldStage,
                     StampBackgroundColorStage,
                     StampColorStage,
                     StampIconStage,
@@ -471,6 +563,8 @@ public final class UpdateCardsResponse {
 
         private int customerCardsCount;
 
+        private String expiresAt;
+
         private String headerText;
 
         private int id;
@@ -480,6 +574,10 @@ public final class UpdateCardsResponse {
         private String name;
 
         private int rewardsCount;
+
+        private boolean showMemberField;
+
+        private boolean showStampsToRewardField;
 
         private String stampBackgroundColor;
 
@@ -499,6 +597,8 @@ public final class UpdateCardsResponse {
 
         private String updatedAt;
 
+        private List<String> auxiliaryFields = new ArrayList<>();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -507,14 +607,18 @@ public final class UpdateCardsResponse {
         @java.lang.Override
         public Builder from(UpdateCardsResponse other) {
             archivedAt(other.getArchivedAt());
+            auxiliaryFields(other.getAuxiliaryFields());
             cardColor(other.getCardColor());
             createdAt(other.getCreatedAt());
             customerCardsCount(other.getCustomerCardsCount());
+            expiresAt(other.getExpiresAt());
             headerText(other.getHeaderText());
             id(other.getId());
             initialStamps(other.getInitialStamps());
             name(other.getName());
             rewardsCount(other.getRewardsCount());
+            showMemberField(other.getShowMemberField());
+            showStampsToRewardField(other.getShowStampsToRewardField());
             stampBackgroundColor(other.getStampBackgroundColor());
             stampColor(other.getStampColor());
             stampIcon(other.getStampIcon());
@@ -566,8 +670,19 @@ public final class UpdateCardsResponse {
          */
         @java.lang.Override
         @JsonSetter("customer_cards_count")
-        public HeaderTextStage customerCardsCount(int customerCardsCount) {
+        public ExpiresAtStage customerCardsCount(int customerCardsCount) {
             this.customerCardsCount = customerCardsCount;
+            return this;
+        }
+
+        /**
+         * <p>ISO 8601 timestamp when the card expires, or null if it does not expire</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("expires_at")
+        public HeaderTextStage expiresAt(@NotNull String expiresAt) {
+            this.expiresAt = Objects.requireNonNull(expiresAt, "expiresAt must not be null");
             return this;
         }
 
@@ -621,8 +736,30 @@ public final class UpdateCardsResponse {
          */
         @java.lang.Override
         @JsonSetter("rewards_count")
-        public StampBackgroundColorStage rewardsCount(int rewardsCount) {
+        public ShowMemberFieldStage rewardsCount(int rewardsCount) {
             this.rewardsCount = rewardsCount;
+            return this;
+        }
+
+        /**
+         * <p>Whether wallet passes show the member name field</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("show_member_field")
+        public ShowStampsToRewardFieldStage showMemberField(boolean showMemberField) {
+            this.showMemberField = showMemberField;
+            return this;
+        }
+
+        /**
+         * <p>Whether wallet passes show the stamps-to-reward field</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("show_stamps_to_reward_field")
+        public StampBackgroundColorStage showStampsToRewardField(boolean showStampsToRewardField) {
+            this.showStampsToRewardField = showStampsToRewardField;
             return this;
         }
 
@@ -726,18 +863,57 @@ public final class UpdateCardsResponse {
             return this;
         }
 
+        /**
+         * <p>Up to two extra front-of-pass fields</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllAuxiliaryFields(List<String> auxiliaryFields) {
+            if (auxiliaryFields != null) {
+                this.auxiliaryFields.addAll(auxiliaryFields);
+            }
+            return this;
+        }
+
+        /**
+         * <p>Up to two extra front-of-pass fields</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAuxiliaryFields(String auxiliaryFields) {
+            this.auxiliaryFields.add(auxiliaryFields);
+            return this;
+        }
+
+        /**
+         * <p>Up to two extra front-of-pass fields</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "auxiliary_fields", nulls = Nulls.SKIP)
+        public _FinalStage auxiliaryFields(List<String> auxiliaryFields) {
+            this.auxiliaryFields.clear();
+            if (auxiliaryFields != null) {
+                this.auxiliaryFields.addAll(auxiliaryFields);
+            }
+            return this;
+        }
+
         @java.lang.Override
         public UpdateCardsResponse build() {
             return new UpdateCardsResponse(
                     archivedAt,
+                    auxiliaryFields,
                     cardColor,
                     createdAt,
                     customerCardsCount,
+                    expiresAt,
                     headerText,
                     id,
                     initialStamps,
                     name,
                     rewardsCount,
+                    showMemberField,
+                    showStampsToRewardField,
                     stampBackgroundColor,
                     stampColor,
                     stampIcon,

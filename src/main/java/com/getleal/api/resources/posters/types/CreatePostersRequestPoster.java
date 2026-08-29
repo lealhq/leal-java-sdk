@@ -24,9 +24,19 @@ public final class CreatePostersRequestPoster {
 
     private final int cardId;
 
+    private final Optional<String> contactCollectionMode;
+
+    private final Optional<Double> minimumAge;
+
     private final Optional<String> paperSize;
 
     private final Optional<String> primaryColor;
+
+    private final Optional<Boolean> requireBirthday;
+
+    private final Optional<Boolean> requireEmail;
+
+    private final Optional<Boolean> requirePhone;
 
     private final Optional<String> secondaryColor;
 
@@ -39,16 +49,26 @@ public final class CreatePostersRequestPoster {
     private CreatePostersRequestPoster(
             Optional<Boolean> active,
             int cardId,
+            Optional<String> contactCollectionMode,
+            Optional<Double> minimumAge,
             Optional<String> paperSize,
             Optional<String> primaryColor,
+            Optional<Boolean> requireBirthday,
+            Optional<Boolean> requireEmail,
+            Optional<Boolean> requirePhone,
             Optional<String> secondaryColor,
             Optional<String> textColor,
             Optional<String> title,
             Map<String, Object> additionalProperties) {
         this.active = active;
         this.cardId = cardId;
+        this.contactCollectionMode = contactCollectionMode;
+        this.minimumAge = minimumAge;
         this.paperSize = paperSize;
         this.primaryColor = primaryColor;
+        this.requireBirthday = requireBirthday;
+        this.requireEmail = requireEmail;
+        this.requirePhone = requirePhone;
         this.secondaryColor = secondaryColor;
         this.textColor = textColor;
         this.title = title;
@@ -72,6 +92,22 @@ public final class CreatePostersRequestPoster {
     }
 
     /**
+     * @return Which contact fields appear on the public signup form
+     */
+    @JsonProperty("contact_collection_mode")
+    public Optional<String> getContactCollectionMode() {
+        return contactCollectionMode;
+    }
+
+    /**
+     * @return Minimum customer age required for signup. Requires require_birthday to be true.
+     */
+    @JsonProperty("minimum_age")
+    public Optional<Double> getMinimumAge() {
+        return minimumAge;
+    }
+
+    /**
      * @return Print size – one of: a4, a5, a6, letter
      */
     @JsonProperty("paper_size")
@@ -85,6 +121,30 @@ public final class CreatePostersRequestPoster {
     @JsonProperty("primary_color")
     public Optional<String> getPrimaryColor() {
         return primaryColor;
+    }
+
+    /**
+     * @return Whether date of birth is required on the public signup form
+     */
+    @JsonProperty("require_birthday")
+    public Optional<Boolean> getRequireBirthday() {
+        return requireBirthday;
+    }
+
+    /**
+     * @return Whether email is required when it is collected
+     */
+    @JsonProperty("require_email")
+    public Optional<Boolean> getRequireEmail() {
+        return requireEmail;
+    }
+
+    /**
+     * @return Whether phone number is required when it is collected
+     */
+    @JsonProperty("require_phone")
+    public Optional<Boolean> getRequirePhone() {
+        return requirePhone;
     }
 
     /**
@@ -125,8 +185,13 @@ public final class CreatePostersRequestPoster {
     private boolean equalTo(CreatePostersRequestPoster other) {
         return active.equals(other.active)
                 && cardId == other.cardId
+                && contactCollectionMode.equals(other.contactCollectionMode)
+                && minimumAge.equals(other.minimumAge)
                 && paperSize.equals(other.paperSize)
                 && primaryColor.equals(other.primaryColor)
+                && requireBirthday.equals(other.requireBirthday)
+                && requireEmail.equals(other.requireEmail)
+                && requirePhone.equals(other.requirePhone)
                 && secondaryColor.equals(other.secondaryColor)
                 && textColor.equals(other.textColor)
                 && title.equals(other.title);
@@ -137,8 +202,13 @@ public final class CreatePostersRequestPoster {
         return Objects.hash(
                 this.active,
                 this.cardId,
+                this.contactCollectionMode,
+                this.minimumAge,
                 this.paperSize,
                 this.primaryColor,
+                this.requireBirthday,
+                this.requireEmail,
+                this.requirePhone,
                 this.secondaryColor,
                 this.textColor,
                 this.title);
@@ -177,6 +247,20 @@ public final class CreatePostersRequestPoster {
         _FinalStage active(Boolean active);
 
         /**
+         * <p>Which contact fields appear on the public signup form</p>
+         */
+        _FinalStage contactCollectionMode(Optional<String> contactCollectionMode);
+
+        _FinalStage contactCollectionMode(String contactCollectionMode);
+
+        /**
+         * <p>Minimum customer age required for signup. Requires require_birthday to be true.</p>
+         */
+        _FinalStage minimumAge(Optional<Double> minimumAge);
+
+        _FinalStage minimumAge(Double minimumAge);
+
+        /**
          * <p>Print size – one of: a4, a5, a6, letter</p>
          */
         _FinalStage paperSize(Optional<String> paperSize);
@@ -189,6 +273,27 @@ public final class CreatePostersRequestPoster {
         _FinalStage primaryColor(Optional<String> primaryColor);
 
         _FinalStage primaryColor(String primaryColor);
+
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         */
+        _FinalStage requireBirthday(Optional<Boolean> requireBirthday);
+
+        _FinalStage requireBirthday(Boolean requireBirthday);
+
+        /**
+         * <p>Whether email is required when it is collected</p>
+         */
+        _FinalStage requireEmail(Optional<Boolean> requireEmail);
+
+        _FinalStage requireEmail(Boolean requireEmail);
+
+        /**
+         * <p>Whether phone number is required when it is collected</p>
+         */
+        _FinalStage requirePhone(Optional<Boolean> requirePhone);
+
+        _FinalStage requirePhone(Boolean requirePhone);
 
         /**
          * <p>Secondary brand color as a hex string</p>
@@ -222,9 +327,19 @@ public final class CreatePostersRequestPoster {
 
         private Optional<String> secondaryColor = Optional.empty();
 
+        private Optional<Boolean> requirePhone = Optional.empty();
+
+        private Optional<Boolean> requireEmail = Optional.empty();
+
+        private Optional<Boolean> requireBirthday = Optional.empty();
+
         private Optional<String> primaryColor = Optional.empty();
 
         private Optional<String> paperSize = Optional.empty();
+
+        private Optional<Double> minimumAge = Optional.empty();
+
+        private Optional<String> contactCollectionMode = Optional.empty();
 
         private Optional<Boolean> active = Optional.empty();
 
@@ -237,8 +352,13 @@ public final class CreatePostersRequestPoster {
         public Builder from(CreatePostersRequestPoster other) {
             active(other.getActive());
             cardId(other.getCardId());
+            contactCollectionMode(other.getContactCollectionMode());
+            minimumAge(other.getMinimumAge());
             paperSize(other.getPaperSize());
             primaryColor(other.getPrimaryColor());
+            requireBirthday(other.getRequireBirthday());
+            requireEmail(other.getRequireEmail());
+            requirePhone(other.getRequirePhone());
             secondaryColor(other.getSecondaryColor());
             textColor(other.getTextColor());
             title(other.getTitle());
@@ -317,6 +437,66 @@ public final class CreatePostersRequestPoster {
         }
 
         /**
+         * <p>Whether phone number is required when it is collected</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requirePhone(Boolean requirePhone) {
+            this.requirePhone = Optional.ofNullable(requirePhone);
+            return this;
+        }
+
+        /**
+         * <p>Whether phone number is required when it is collected</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "require_phone", nulls = Nulls.SKIP)
+        public _FinalStage requirePhone(Optional<Boolean> requirePhone) {
+            this.requirePhone = requirePhone;
+            return this;
+        }
+
+        /**
+         * <p>Whether email is required when it is collected</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requireEmail(Boolean requireEmail) {
+            this.requireEmail = Optional.ofNullable(requireEmail);
+            return this;
+        }
+
+        /**
+         * <p>Whether email is required when it is collected</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "require_email", nulls = Nulls.SKIP)
+        public _FinalStage requireEmail(Optional<Boolean> requireEmail) {
+            this.requireEmail = requireEmail;
+            return this;
+        }
+
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requireBirthday(Boolean requireBirthday) {
+            this.requireBirthday = Optional.ofNullable(requireBirthday);
+            return this;
+        }
+
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "require_birthday", nulls = Nulls.SKIP)
+        public _FinalStage requireBirthday(Optional<Boolean> requireBirthday) {
+            this.requireBirthday = requireBirthday;
+            return this;
+        }
+
+        /**
          * <p>Primary brand color as a hex string (e.g. '#FF5733')</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -357,6 +537,46 @@ public final class CreatePostersRequestPoster {
         }
 
         /**
+         * <p>Minimum customer age required for signup. Requires require_birthday to be true.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage minimumAge(Double minimumAge) {
+            this.minimumAge = Optional.ofNullable(minimumAge);
+            return this;
+        }
+
+        /**
+         * <p>Minimum customer age required for signup. Requires require_birthday to be true.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "minimum_age", nulls = Nulls.SKIP)
+        public _FinalStage minimumAge(Optional<Double> minimumAge) {
+            this.minimumAge = minimumAge;
+            return this;
+        }
+
+        /**
+         * <p>Which contact fields appear on the public signup form</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage contactCollectionMode(String contactCollectionMode) {
+            this.contactCollectionMode = Optional.ofNullable(contactCollectionMode);
+            return this;
+        }
+
+        /**
+         * <p>Which contact fields appear on the public signup form</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "contact_collection_mode", nulls = Nulls.SKIP)
+        public _FinalStage contactCollectionMode(Optional<String> contactCollectionMode) {
+            this.contactCollectionMode = contactCollectionMode;
+            return this;
+        }
+
+        /**
          * <p>Whether the poster is active (defaults to true)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -379,7 +599,19 @@ public final class CreatePostersRequestPoster {
         @java.lang.Override
         public CreatePostersRequestPoster build() {
             return new CreatePostersRequestPoster(
-                    active, cardId, paperSize, primaryColor, secondaryColor, textColor, title, additionalProperties);
+                    active,
+                    cardId,
+                    contactCollectionMode,
+                    minimumAge,
+                    paperSize,
+                    primaryColor,
+                    requireBirthday,
+                    requireEmail,
+                    requirePhone,
+                    secondaryColor,
+                    textColor,
+                    title,
+                    additionalProperties);
         }
 
         @java.lang.Override

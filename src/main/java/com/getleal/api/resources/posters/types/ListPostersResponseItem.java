@@ -25,17 +25,31 @@ public final class ListPostersResponseItem {
 
     private final int cardId;
 
+    private final boolean collectEmail;
+
+    private final boolean collectPhone;
+
+    private final String contactCollectionMode;
+
     private final String createdAt;
 
     private final String displayUrl;
 
     private final int id;
 
+    private final double minimumAge;
+
     private final String paperSize;
 
     private final String primaryColor;
 
     private final String qrCodeUrl;
+
+    private final boolean requireBirthday;
+
+    private final boolean requireEmail;
+
+    private final boolean requirePhone;
 
     private final String secondaryColor;
 
@@ -53,12 +67,19 @@ public final class ListPostersResponseItem {
             int accountId,
             boolean active,
             int cardId,
+            boolean collectEmail,
+            boolean collectPhone,
+            String contactCollectionMode,
             String createdAt,
             String displayUrl,
             int id,
+            double minimumAge,
             String paperSize,
             String primaryColor,
             String qrCodeUrl,
+            boolean requireBirthday,
+            boolean requireEmail,
+            boolean requirePhone,
             String secondaryColor,
             String signupUrl,
             String textColor,
@@ -68,12 +89,19 @@ public final class ListPostersResponseItem {
         this.accountId = accountId;
         this.active = active;
         this.cardId = cardId;
+        this.collectEmail = collectEmail;
+        this.collectPhone = collectPhone;
+        this.contactCollectionMode = contactCollectionMode;
         this.createdAt = createdAt;
         this.displayUrl = displayUrl;
         this.id = id;
+        this.minimumAge = minimumAge;
         this.paperSize = paperSize;
         this.primaryColor = primaryColor;
         this.qrCodeUrl = qrCodeUrl;
+        this.requireBirthday = requireBirthday;
+        this.requireEmail = requireEmail;
+        this.requirePhone = requirePhone;
         this.secondaryColor = secondaryColor;
         this.signupUrl = signupUrl;
         this.textColor = textColor;
@@ -107,6 +135,30 @@ public final class ListPostersResponseItem {
     }
 
     /**
+     * @return Whether the public signup form collects email
+     */
+    @JsonProperty("collect_email")
+    public boolean getCollectEmail() {
+        return collectEmail;
+    }
+
+    /**
+     * @return Whether the public signup form collects phone number
+     */
+    @JsonProperty("collect_phone")
+    public boolean getCollectPhone() {
+        return collectPhone;
+    }
+
+    /**
+     * @return Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'
+     */
+    @JsonProperty("contact_collection_mode")
+    public String getContactCollectionMode() {
+        return contactCollectionMode;
+    }
+
+    /**
      * @return ISO 8601 creation timestamp
      */
     @JsonProperty("created_at")
@@ -131,6 +183,14 @@ public final class ListPostersResponseItem {
     }
 
     /**
+     * @return Minimum customer age required for signup
+     */
+    @JsonProperty("minimum_age")
+    public double getMinimumAge() {
+        return minimumAge;
+    }
+
+    /**
      * @return Paper size the poster is laid out for
      */
     @JsonProperty("paper_size")
@@ -152,6 +212,30 @@ public final class ListPostersResponseItem {
     @JsonProperty("qr_code_url")
     public String getQrCodeUrl() {
         return qrCodeUrl;
+    }
+
+    /**
+     * @return Whether date of birth is required on the public signup form
+     */
+    @JsonProperty("require_birthday")
+    public boolean getRequireBirthday() {
+        return requireBirthday;
+    }
+
+    /**
+     * @return Whether email is required when it is collected
+     */
+    @JsonProperty("require_email")
+    public boolean getRequireEmail() {
+        return requireEmail;
+    }
+
+    /**
+     * @return Whether phone number is required when it is collected
+     */
+    @JsonProperty("require_phone")
+    public boolean getRequirePhone() {
+        return requirePhone;
     }
 
     /**
@@ -209,12 +293,19 @@ public final class ListPostersResponseItem {
         return accountId == other.accountId
                 && active == other.active
                 && cardId == other.cardId
+                && collectEmail == other.collectEmail
+                && collectPhone == other.collectPhone
+                && contactCollectionMode.equals(other.contactCollectionMode)
                 && createdAt.equals(other.createdAt)
                 && displayUrl.equals(other.displayUrl)
                 && id == other.id
+                && minimumAge == other.minimumAge
                 && paperSize.equals(other.paperSize)
                 && primaryColor.equals(other.primaryColor)
                 && qrCodeUrl.equals(other.qrCodeUrl)
+                && requireBirthday == other.requireBirthday
+                && requireEmail == other.requireEmail
+                && requirePhone == other.requirePhone
                 && secondaryColor.equals(other.secondaryColor)
                 && signupUrl.equals(other.signupUrl)
                 && textColor.equals(other.textColor)
@@ -228,12 +319,19 @@ public final class ListPostersResponseItem {
                 this.accountId,
                 this.active,
                 this.cardId,
+                this.collectEmail,
+                this.collectPhone,
+                this.contactCollectionMode,
                 this.createdAt,
                 this.displayUrl,
                 this.id,
+                this.minimumAge,
                 this.paperSize,
                 this.primaryColor,
                 this.qrCodeUrl,
+                this.requireBirthday,
+                this.requireEmail,
+                this.requirePhone,
                 this.secondaryColor,
                 this.signupUrl,
                 this.textColor,
@@ -270,7 +368,28 @@ public final class ListPostersResponseItem {
         /**
          * <p>Loyalty card customers are signed up to</p>
          */
-        CreatedAtStage cardId(int cardId);
+        CollectEmailStage cardId(int cardId);
+    }
+
+    public interface CollectEmailStage {
+        /**
+         * <p>Whether the public signup form collects email</p>
+         */
+        CollectPhoneStage collectEmail(boolean collectEmail);
+    }
+
+    public interface CollectPhoneStage {
+        /**
+         * <p>Whether the public signup form collects phone number</p>
+         */
+        ContactCollectionModeStage collectPhone(boolean collectPhone);
+    }
+
+    public interface ContactCollectionModeStage {
+        /**
+         * <p>Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'</p>
+         */
+        CreatedAtStage contactCollectionMode(@NotNull String contactCollectionMode);
     }
 
     public interface CreatedAtStage {
@@ -291,7 +410,14 @@ public final class ListPostersResponseItem {
         /**
          * <p>Unique poster ID</p>
          */
-        PaperSizeStage id(int id);
+        MinimumAgeStage id(int id);
+    }
+
+    public interface MinimumAgeStage {
+        /**
+         * <p>Minimum customer age required for signup</p>
+         */
+        PaperSizeStage minimumAge(double minimumAge);
     }
 
     public interface PaperSizeStage {
@@ -312,7 +438,28 @@ public final class ListPostersResponseItem {
         /**
          * <p>URL encoded in the QR code</p>
          */
-        SecondaryColorStage qrCodeUrl(@NotNull String qrCodeUrl);
+        RequireBirthdayStage qrCodeUrl(@NotNull String qrCodeUrl);
+    }
+
+    public interface RequireBirthdayStage {
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         */
+        RequireEmailStage requireBirthday(boolean requireBirthday);
+    }
+
+    public interface RequireEmailStage {
+        /**
+         * <p>Whether email is required when it is collected</p>
+         */
+        RequirePhoneStage requireEmail(boolean requireEmail);
+    }
+
+    public interface RequirePhoneStage {
+        /**
+         * <p>Whether phone number is required when it is collected</p>
+         */
+        SecondaryColorStage requirePhone(boolean requirePhone);
     }
 
     public interface SecondaryColorStage {
@@ -363,12 +510,19 @@ public final class ListPostersResponseItem {
             implements AccountIdStage,
                     ActiveStage,
                     CardIdStage,
+                    CollectEmailStage,
+                    CollectPhoneStage,
+                    ContactCollectionModeStage,
                     CreatedAtStage,
                     DisplayUrlStage,
                     IdStage,
+                    MinimumAgeStage,
                     PaperSizeStage,
                     PrimaryColorStage,
                     QrCodeUrlStage,
+                    RequireBirthdayStage,
+                    RequireEmailStage,
+                    RequirePhoneStage,
                     SecondaryColorStage,
                     SignupUrlStage,
                     TextColorStage,
@@ -381,17 +535,31 @@ public final class ListPostersResponseItem {
 
         private int cardId;
 
+        private boolean collectEmail;
+
+        private boolean collectPhone;
+
+        private String contactCollectionMode;
+
         private String createdAt;
 
         private String displayUrl;
 
         private int id;
 
+        private double minimumAge;
+
         private String paperSize;
 
         private String primaryColor;
 
         private String qrCodeUrl;
+
+        private boolean requireBirthday;
+
+        private boolean requireEmail;
+
+        private boolean requirePhone;
 
         private String secondaryColor;
 
@@ -413,12 +581,19 @@ public final class ListPostersResponseItem {
             accountId(other.getAccountId());
             active(other.getActive());
             cardId(other.getCardId());
+            collectEmail(other.getCollectEmail());
+            collectPhone(other.getCollectPhone());
+            contactCollectionMode(other.getContactCollectionMode());
             createdAt(other.getCreatedAt());
             displayUrl(other.getDisplayUrl());
             id(other.getId());
+            minimumAge(other.getMinimumAge());
             paperSize(other.getPaperSize());
             primaryColor(other.getPrimaryColor());
             qrCodeUrl(other.getQrCodeUrl());
+            requireBirthday(other.getRequireBirthday());
+            requireEmail(other.getRequireEmail());
+            requirePhone(other.getRequirePhone());
             secondaryColor(other.getSecondaryColor());
             signupUrl(other.getSignupUrl());
             textColor(other.getTextColor());
@@ -455,8 +630,42 @@ public final class ListPostersResponseItem {
          */
         @java.lang.Override
         @JsonSetter("card_id")
-        public CreatedAtStage cardId(int cardId) {
+        public CollectEmailStage cardId(int cardId) {
             this.cardId = cardId;
+            return this;
+        }
+
+        /**
+         * <p>Whether the public signup form collects email</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("collect_email")
+        public CollectPhoneStage collectEmail(boolean collectEmail) {
+            this.collectEmail = collectEmail;
+            return this;
+        }
+
+        /**
+         * <p>Whether the public signup form collects phone number</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("collect_phone")
+        public ContactCollectionModeStage collectPhone(boolean collectPhone) {
+            this.collectPhone = collectPhone;
+            return this;
+        }
+
+        /**
+         * <p>Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("contact_collection_mode")
+        public CreatedAtStage contactCollectionMode(@NotNull String contactCollectionMode) {
+            this.contactCollectionMode =
+                    Objects.requireNonNull(contactCollectionMode, "contactCollectionMode must not be null");
             return this;
         }
 
@@ -488,8 +697,19 @@ public final class ListPostersResponseItem {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public PaperSizeStage id(int id) {
+        public MinimumAgeStage id(int id) {
             this.id = id;
+            return this;
+        }
+
+        /**
+         * <p>Minimum customer age required for signup</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("minimum_age")
+        public PaperSizeStage minimumAge(double minimumAge) {
+            this.minimumAge = minimumAge;
             return this;
         }
 
@@ -521,8 +741,41 @@ public final class ListPostersResponseItem {
          */
         @java.lang.Override
         @JsonSetter("qr_code_url")
-        public SecondaryColorStage qrCodeUrl(@NotNull String qrCodeUrl) {
+        public RequireBirthdayStage qrCodeUrl(@NotNull String qrCodeUrl) {
             this.qrCodeUrl = Objects.requireNonNull(qrCodeUrl, "qrCodeUrl must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("require_birthday")
+        public RequireEmailStage requireBirthday(boolean requireBirthday) {
+            this.requireBirthday = requireBirthday;
+            return this;
+        }
+
+        /**
+         * <p>Whether email is required when it is collected</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("require_email")
+        public RequirePhoneStage requireEmail(boolean requireEmail) {
+            this.requireEmail = requireEmail;
+            return this;
+        }
+
+        /**
+         * <p>Whether phone number is required when it is collected</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("require_phone")
+        public SecondaryColorStage requirePhone(boolean requirePhone) {
+            this.requirePhone = requirePhone;
             return this;
         }
 
@@ -587,12 +840,19 @@ public final class ListPostersResponseItem {
                     accountId,
                     active,
                     cardId,
+                    collectEmail,
+                    collectPhone,
+                    contactCollectionMode,
                     createdAt,
                     displayUrl,
                     id,
+                    minimumAge,
                     paperSize,
                     primaryColor,
                     qrCodeUrl,
+                    requireBirthday,
+                    requireEmail,
+                    requirePhone,
                     secondaryColor,
                     signupUrl,
                     textColor,

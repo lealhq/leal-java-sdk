@@ -22,9 +22,19 @@ import java.util.Optional;
 public final class UpdatePostersRequestPoster {
     private final Optional<Boolean> active;
 
+    private final Optional<String> contactCollectionMode;
+
+    private final Optional<Double> minimumAge;
+
     private final Optional<String> paperSize;
 
     private final Optional<String> primaryColor;
+
+    private final Optional<Boolean> requireBirthday;
+
+    private final Optional<Boolean> requireEmail;
+
+    private final Optional<Boolean> requirePhone;
 
     private final Optional<String> secondaryColor;
 
@@ -36,15 +46,25 @@ public final class UpdatePostersRequestPoster {
 
     private UpdatePostersRequestPoster(
             Optional<Boolean> active,
+            Optional<String> contactCollectionMode,
+            Optional<Double> minimumAge,
             Optional<String> paperSize,
             Optional<String> primaryColor,
+            Optional<Boolean> requireBirthday,
+            Optional<Boolean> requireEmail,
+            Optional<Boolean> requirePhone,
             Optional<String> secondaryColor,
             Optional<String> textColor,
             Optional<String> title,
             Map<String, Object> additionalProperties) {
         this.active = active;
+        this.contactCollectionMode = contactCollectionMode;
+        this.minimumAge = minimumAge;
         this.paperSize = paperSize;
         this.primaryColor = primaryColor;
+        this.requireBirthday = requireBirthday;
+        this.requireEmail = requireEmail;
+        this.requirePhone = requirePhone;
         this.secondaryColor = secondaryColor;
         this.textColor = textColor;
         this.title = title;
@@ -57,6 +77,22 @@ public final class UpdatePostersRequestPoster {
     @JsonProperty("active")
     public Optional<Boolean> getActive() {
         return active;
+    }
+
+    /**
+     * @return Which contact fields appear on the public signup form
+     */
+    @JsonProperty("contact_collection_mode")
+    public Optional<String> getContactCollectionMode() {
+        return contactCollectionMode;
+    }
+
+    /**
+     * @return Minimum customer age required for signup. Requires require_birthday to be true.
+     */
+    @JsonProperty("minimum_age")
+    public Optional<Double> getMinimumAge() {
+        return minimumAge;
     }
 
     /**
@@ -73,6 +109,30 @@ public final class UpdatePostersRequestPoster {
     @JsonProperty("primary_color")
     public Optional<String> getPrimaryColor() {
         return primaryColor;
+    }
+
+    /**
+     * @return Whether date of birth is required on the public signup form
+     */
+    @JsonProperty("require_birthday")
+    public Optional<Boolean> getRequireBirthday() {
+        return requireBirthday;
+    }
+
+    /**
+     * @return Whether email is required when it is collected
+     */
+    @JsonProperty("require_email")
+    public Optional<Boolean> getRequireEmail() {
+        return requireEmail;
+    }
+
+    /**
+     * @return Whether phone number is required when it is collected
+     */
+    @JsonProperty("require_phone")
+    public Optional<Boolean> getRequirePhone() {
+        return requirePhone;
     }
 
     /**
@@ -112,8 +172,13 @@ public final class UpdatePostersRequestPoster {
 
     private boolean equalTo(UpdatePostersRequestPoster other) {
         return active.equals(other.active)
+                && contactCollectionMode.equals(other.contactCollectionMode)
+                && minimumAge.equals(other.minimumAge)
                 && paperSize.equals(other.paperSize)
                 && primaryColor.equals(other.primaryColor)
+                && requireBirthday.equals(other.requireBirthday)
+                && requireEmail.equals(other.requireEmail)
+                && requirePhone.equals(other.requirePhone)
                 && secondaryColor.equals(other.secondaryColor)
                 && textColor.equals(other.textColor)
                 && title.equals(other.title);
@@ -122,7 +187,17 @@ public final class UpdatePostersRequestPoster {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.active, this.paperSize, this.primaryColor, this.secondaryColor, this.textColor, this.title);
+                this.active,
+                this.contactCollectionMode,
+                this.minimumAge,
+                this.paperSize,
+                this.primaryColor,
+                this.requireBirthday,
+                this.requireEmail,
+                this.requirePhone,
+                this.secondaryColor,
+                this.textColor,
+                this.title);
     }
 
     @java.lang.Override
@@ -138,9 +213,19 @@ public final class UpdatePostersRequestPoster {
     public static final class Builder {
         private Optional<Boolean> active = Optional.empty();
 
+        private Optional<String> contactCollectionMode = Optional.empty();
+
+        private Optional<Double> minimumAge = Optional.empty();
+
         private Optional<String> paperSize = Optional.empty();
 
         private Optional<String> primaryColor = Optional.empty();
+
+        private Optional<Boolean> requireBirthday = Optional.empty();
+
+        private Optional<Boolean> requireEmail = Optional.empty();
+
+        private Optional<Boolean> requirePhone = Optional.empty();
 
         private Optional<String> secondaryColor = Optional.empty();
 
@@ -155,8 +240,13 @@ public final class UpdatePostersRequestPoster {
 
         public Builder from(UpdatePostersRequestPoster other) {
             active(other.getActive());
+            contactCollectionMode(other.getContactCollectionMode());
+            minimumAge(other.getMinimumAge());
             paperSize(other.getPaperSize());
             primaryColor(other.getPrimaryColor());
+            requireBirthday(other.getRequireBirthday());
+            requireEmail(other.getRequireEmail());
+            requirePhone(other.getRequirePhone());
             secondaryColor(other.getSecondaryColor());
             textColor(other.getTextColor());
             title(other.getTitle());
@@ -174,6 +264,34 @@ public final class UpdatePostersRequestPoster {
 
         public Builder active(Boolean active) {
             this.active = Optional.ofNullable(active);
+            return this;
+        }
+
+        /**
+         * <p>Which contact fields appear on the public signup form</p>
+         */
+        @JsonSetter(value = "contact_collection_mode", nulls = Nulls.SKIP)
+        public Builder contactCollectionMode(Optional<String> contactCollectionMode) {
+            this.contactCollectionMode = contactCollectionMode;
+            return this;
+        }
+
+        public Builder contactCollectionMode(String contactCollectionMode) {
+            this.contactCollectionMode = Optional.ofNullable(contactCollectionMode);
+            return this;
+        }
+
+        /**
+         * <p>Minimum customer age required for signup. Requires require_birthday to be true.</p>
+         */
+        @JsonSetter(value = "minimum_age", nulls = Nulls.SKIP)
+        public Builder minimumAge(Optional<Double> minimumAge) {
+            this.minimumAge = minimumAge;
+            return this;
+        }
+
+        public Builder minimumAge(Double minimumAge) {
+            this.minimumAge = Optional.ofNullable(minimumAge);
             return this;
         }
 
@@ -202,6 +320,48 @@ public final class UpdatePostersRequestPoster {
 
         public Builder primaryColor(String primaryColor) {
             this.primaryColor = Optional.ofNullable(primaryColor);
+            return this;
+        }
+
+        /**
+         * <p>Whether date of birth is required on the public signup form</p>
+         */
+        @JsonSetter(value = "require_birthday", nulls = Nulls.SKIP)
+        public Builder requireBirthday(Optional<Boolean> requireBirthday) {
+            this.requireBirthday = requireBirthday;
+            return this;
+        }
+
+        public Builder requireBirthday(Boolean requireBirthday) {
+            this.requireBirthday = Optional.ofNullable(requireBirthday);
+            return this;
+        }
+
+        /**
+         * <p>Whether email is required when it is collected</p>
+         */
+        @JsonSetter(value = "require_email", nulls = Nulls.SKIP)
+        public Builder requireEmail(Optional<Boolean> requireEmail) {
+            this.requireEmail = requireEmail;
+            return this;
+        }
+
+        public Builder requireEmail(Boolean requireEmail) {
+            this.requireEmail = Optional.ofNullable(requireEmail);
+            return this;
+        }
+
+        /**
+         * <p>Whether phone number is required when it is collected</p>
+         */
+        @JsonSetter(value = "require_phone", nulls = Nulls.SKIP)
+        public Builder requirePhone(Optional<Boolean> requirePhone) {
+            this.requirePhone = requirePhone;
+            return this;
+        }
+
+        public Builder requirePhone(Boolean requirePhone) {
+            this.requirePhone = Optional.ofNullable(requirePhone);
             return this;
         }
 
@@ -249,7 +409,18 @@ public final class UpdatePostersRequestPoster {
 
         public UpdatePostersRequestPoster build() {
             return new UpdatePostersRequestPoster(
-                    active, paperSize, primaryColor, secondaryColor, textColor, title, additionalProperties);
+                    active,
+                    contactCollectionMode,
+                    minimumAge,
+                    paperSize,
+                    primaryColor,
+                    requireBirthday,
+                    requireEmail,
+                    requirePhone,
+                    secondaryColor,
+                    textColor,
+                    title,
+                    additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

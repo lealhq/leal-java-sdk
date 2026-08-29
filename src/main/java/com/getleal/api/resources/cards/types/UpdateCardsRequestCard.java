@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.getleal.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,13 +21,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UpdateCardsRequestCard.Builder.class)
 public final class UpdateCardsRequestCard {
+    private final Optional<List<String>> auxiliaryFields;
+
     private final Optional<String> cardColor;
+
+    private final Optional<String> expiresAt;
 
     private final Optional<String> headerText;
 
     private final Optional<Integer> initialStamps;
 
     private final Optional<String> name;
+
+    private final Optional<Boolean> showMemberField;
+
+    private final Optional<Boolean> showStampsToRewardField;
 
     private final Optional<String> stampBackgroundColor;
 
@@ -47,10 +56,14 @@ public final class UpdateCardsRequestCard {
     private final Map<String, Object> additionalProperties;
 
     private UpdateCardsRequestCard(
+            Optional<List<String>> auxiliaryFields,
             Optional<String> cardColor,
+            Optional<String> expiresAt,
             Optional<String> headerText,
             Optional<Integer> initialStamps,
             Optional<String> name,
+            Optional<Boolean> showMemberField,
+            Optional<Boolean> showStampsToRewardField,
             Optional<String> stampBackgroundColor,
             Optional<String> stampColor,
             Optional<String> stampIcon,
@@ -60,10 +73,14 @@ public final class UpdateCardsRequestCard {
             Optional<String> stripType,
             Optional<String> textColor,
             Map<String, Object> additionalProperties) {
+        this.auxiliaryFields = auxiliaryFields;
         this.cardColor = cardColor;
+        this.expiresAt = expiresAt;
         this.headerText = headerText;
         this.initialStamps = initialStamps;
         this.name = name;
+        this.showMemberField = showMemberField;
+        this.showStampsToRewardField = showStampsToRewardField;
         this.stampBackgroundColor = stampBackgroundColor;
         this.stampColor = stampColor;
         this.stampIcon = stampIcon;
@@ -76,11 +93,27 @@ public final class UpdateCardsRequestCard {
     }
 
     /**
+     * @return Up to two extra front-of-pass fields. Blank values are ignored.
+     */
+    @JsonProperty("auxiliary_fields")
+    public Optional<List<String>> getAuxiliaryFields() {
+        return auxiliaryFields;
+    }
+
+    /**
      * @return Hex colour for the card background
      */
     @JsonProperty("card_color")
     public Optional<String> getCardColor() {
         return cardColor;
+    }
+
+    /**
+     * @return Card expiry timestamp (ISO 8601)
+     */
+    @JsonProperty("expires_at")
+    public Optional<String> getExpiresAt() {
+        return expiresAt;
     }
 
     /**
@@ -105,6 +138,22 @@ public final class UpdateCardsRequestCard {
     @JsonProperty("name")
     public Optional<String> getName() {
         return name;
+    }
+
+    /**
+     * @return Whether wallet passes show the member name field
+     */
+    @JsonProperty("show_member_field")
+    public Optional<Boolean> getShowMemberField() {
+        return showMemberField;
+    }
+
+    /**
+     * @return Whether wallet passes show the stamps-to-reward field
+     */
+    @JsonProperty("show_stamps_to_reward_field")
+    public Optional<Boolean> getShowStampsToRewardField() {
+        return showStampsToRewardField;
     }
 
     /**
@@ -183,10 +232,14 @@ public final class UpdateCardsRequestCard {
     }
 
     private boolean equalTo(UpdateCardsRequestCard other) {
-        return cardColor.equals(other.cardColor)
+        return auxiliaryFields.equals(other.auxiliaryFields)
+                && cardColor.equals(other.cardColor)
+                && expiresAt.equals(other.expiresAt)
                 && headerText.equals(other.headerText)
                 && initialStamps.equals(other.initialStamps)
                 && name.equals(other.name)
+                && showMemberField.equals(other.showMemberField)
+                && showStampsToRewardField.equals(other.showStampsToRewardField)
                 && stampBackgroundColor.equals(other.stampBackgroundColor)
                 && stampColor.equals(other.stampColor)
                 && stampIcon.equals(other.stampIcon)
@@ -200,10 +253,14 @@ public final class UpdateCardsRequestCard {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.auxiliaryFields,
                 this.cardColor,
+                this.expiresAt,
                 this.headerText,
                 this.initialStamps,
                 this.name,
+                this.showMemberField,
+                this.showStampsToRewardField,
                 this.stampBackgroundColor,
                 this.stampColor,
                 this.stampIcon,
@@ -225,13 +282,21 @@ public final class UpdateCardsRequestCard {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<String>> auxiliaryFields = Optional.empty();
+
         private Optional<String> cardColor = Optional.empty();
+
+        private Optional<String> expiresAt = Optional.empty();
 
         private Optional<String> headerText = Optional.empty();
 
         private Optional<Integer> initialStamps = Optional.empty();
 
         private Optional<String> name = Optional.empty();
+
+        private Optional<Boolean> showMemberField = Optional.empty();
+
+        private Optional<Boolean> showStampsToRewardField = Optional.empty();
 
         private Optional<String> stampBackgroundColor = Optional.empty();
 
@@ -255,10 +320,14 @@ public final class UpdateCardsRequestCard {
         private Builder() {}
 
         public Builder from(UpdateCardsRequestCard other) {
+            auxiliaryFields(other.getAuxiliaryFields());
             cardColor(other.getCardColor());
+            expiresAt(other.getExpiresAt());
             headerText(other.getHeaderText());
             initialStamps(other.getInitialStamps());
             name(other.getName());
+            showMemberField(other.getShowMemberField());
+            showStampsToRewardField(other.getShowStampsToRewardField());
             stampBackgroundColor(other.getStampBackgroundColor());
             stampColor(other.getStampColor());
             stampIcon(other.getStampIcon());
@@ -267,6 +336,20 @@ public final class UpdateCardsRequestCard {
             stripPreset(other.getStripPreset());
             stripType(other.getStripType());
             textColor(other.getTextColor());
+            return this;
+        }
+
+        /**
+         * <p>Up to two extra front-of-pass fields. Blank values are ignored.</p>
+         */
+        @JsonSetter(value = "auxiliary_fields", nulls = Nulls.SKIP)
+        public Builder auxiliaryFields(Optional<List<String>> auxiliaryFields) {
+            this.auxiliaryFields = auxiliaryFields;
+            return this;
+        }
+
+        public Builder auxiliaryFields(List<String> auxiliaryFields) {
+            this.auxiliaryFields = Optional.ofNullable(auxiliaryFields);
             return this;
         }
 
@@ -281,6 +364,20 @@ public final class UpdateCardsRequestCard {
 
         public Builder cardColor(String cardColor) {
             this.cardColor = Optional.ofNullable(cardColor);
+            return this;
+        }
+
+        /**
+         * <p>Card expiry timestamp (ISO 8601)</p>
+         */
+        @JsonSetter(value = "expires_at", nulls = Nulls.SKIP)
+        public Builder expiresAt(Optional<String> expiresAt) {
+            this.expiresAt = expiresAt;
+            return this;
+        }
+
+        public Builder expiresAt(String expiresAt) {
+            this.expiresAt = Optional.ofNullable(expiresAt);
             return this;
         }
 
@@ -323,6 +420,34 @@ public final class UpdateCardsRequestCard {
 
         public Builder name(String name) {
             this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        /**
+         * <p>Whether wallet passes show the member name field</p>
+         */
+        @JsonSetter(value = "show_member_field", nulls = Nulls.SKIP)
+        public Builder showMemberField(Optional<Boolean> showMemberField) {
+            this.showMemberField = showMemberField;
+            return this;
+        }
+
+        public Builder showMemberField(Boolean showMemberField) {
+            this.showMemberField = Optional.ofNullable(showMemberField);
+            return this;
+        }
+
+        /**
+         * <p>Whether wallet passes show the stamps-to-reward field</p>
+         */
+        @JsonSetter(value = "show_stamps_to_reward_field", nulls = Nulls.SKIP)
+        public Builder showStampsToRewardField(Optional<Boolean> showStampsToRewardField) {
+            this.showStampsToRewardField = showStampsToRewardField;
+            return this;
+        }
+
+        public Builder showStampsToRewardField(Boolean showStampsToRewardField) {
+            this.showStampsToRewardField = Optional.ofNullable(showStampsToRewardField);
             return this;
         }
 
@@ -440,10 +565,14 @@ public final class UpdateCardsRequestCard {
 
         public UpdateCardsRequestCard build() {
             return new UpdateCardsRequestCard(
+                    auxiliaryFields,
                     cardColor,
+                    expiresAt,
                     headerText,
                     initialStamps,
                     name,
+                    showMemberField,
+                    showStampsToRewardField,
                     stampBackgroundColor,
                     stampColor,
                     stampIcon,
