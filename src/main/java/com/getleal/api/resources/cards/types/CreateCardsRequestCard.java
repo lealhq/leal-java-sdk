@@ -48,6 +48,8 @@ public final class CreateCardsRequestCard {
 
     private final Optional<String> stripColor;
 
+    private final Optional<Double> stripOpacity;
+
     private final Optional<String> stripPreset;
 
     private final Optional<String> stripType;
@@ -70,6 +72,7 @@ public final class CreateCardsRequestCard {
             Optional<String> stampIcon,
             Optional<Integer> stampsRequired,
             Optional<String> stripColor,
+            Optional<Double> stripOpacity,
             Optional<String> stripPreset,
             Optional<String> stripType,
             Optional<String> textColor,
@@ -87,6 +90,7 @@ public final class CreateCardsRequestCard {
         this.stampIcon = stampIcon;
         this.stampsRequired = stampsRequired;
         this.stripColor = stripColor;
+        this.stripOpacity = stripOpacity;
         this.stripPreset = stripPreset;
         this.stripType = stripType;
         this.textColor = textColor;
@@ -198,6 +202,14 @@ public final class CreateCardsRequestCard {
     }
 
     /**
+     * @return Opacity (0–100) of the strip background over the card colour. Defaults to 100, which renders the colour or image exactly as supplied
+     */
+    @JsonProperty("strip_opacity")
+    public Optional<Double> getStripOpacity() {
+        return stripOpacity;
+    }
+
+    /**
      * @return Preset strip image identifier (used when strip_type is 'preset')
      */
     @JsonProperty("strip_preset")
@@ -246,6 +258,7 @@ public final class CreateCardsRequestCard {
                 && stampIcon.equals(other.stampIcon)
                 && stampsRequired.equals(other.stampsRequired)
                 && stripColor.equals(other.stripColor)
+                && stripOpacity.equals(other.stripOpacity)
                 && stripPreset.equals(other.stripPreset)
                 && stripType.equals(other.stripType)
                 && textColor.equals(other.textColor);
@@ -267,6 +280,7 @@ public final class CreateCardsRequestCard {
                 this.stampIcon,
                 this.stampsRequired,
                 this.stripColor,
+                this.stripOpacity,
                 this.stripPreset,
                 this.stripType,
                 this.textColor);
@@ -382,6 +396,13 @@ public final class CreateCardsRequestCard {
         _FinalStage stripColor(String stripColor);
 
         /**
+         * <p>Opacity (0–100) of the strip background over the card colour. Defaults to 100, which renders the colour or image exactly as supplied</p>
+         */
+        _FinalStage stripOpacity(Optional<Double> stripOpacity);
+
+        _FinalStage stripOpacity(Double stripOpacity);
+
+        /**
          * <p>Preset strip image identifier (used when strip_type is 'preset')</p>
          */
         _FinalStage stripPreset(Optional<String> stripPreset);
@@ -412,6 +433,8 @@ public final class CreateCardsRequestCard {
         private Optional<String> stripType = Optional.empty();
 
         private Optional<String> stripPreset = Optional.empty();
+
+        private Optional<Double> stripOpacity = Optional.empty();
 
         private Optional<String> stripColor = Optional.empty();
 
@@ -457,6 +480,7 @@ public final class CreateCardsRequestCard {
             stampIcon(other.getStampIcon());
             stampsRequired(other.getStampsRequired());
             stripColor(other.getStripColor());
+            stripOpacity(other.getStripOpacity());
             stripPreset(other.getStripPreset());
             stripType(other.getStripType());
             textColor(other.getTextColor());
@@ -531,6 +555,26 @@ public final class CreateCardsRequestCard {
         @JsonSetter(value = "strip_preset", nulls = Nulls.SKIP)
         public _FinalStage stripPreset(Optional<String> stripPreset) {
             this.stripPreset = stripPreset;
+            return this;
+        }
+
+        /**
+         * <p>Opacity (0–100) of the strip background over the card colour. Defaults to 100, which renders the colour or image exactly as supplied</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage stripOpacity(Double stripOpacity) {
+            this.stripOpacity = Optional.ofNullable(stripOpacity);
+            return this;
+        }
+
+        /**
+         * <p>Opacity (0–100) of the strip background over the card colour. Defaults to 100, which renders the colour or image exactly as supplied</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "strip_opacity", nulls = Nulls.SKIP)
+        public _FinalStage stripOpacity(Optional<Double> stripOpacity) {
+            this.stripOpacity = stripOpacity;
             return this;
         }
 
@@ -790,6 +834,7 @@ public final class CreateCardsRequestCard {
                     stampIcon,
                     stampsRequired,
                     stripColor,
+                    stripOpacity,
                     stripPreset,
                     stripType,
                     textColor,

@@ -58,6 +58,8 @@ public final class UpdateCardsResponse {
 
     private final String stripColor;
 
+    private final double stripOpacity;
+
     private final String stripPreset;
 
     private final String stripType;
@@ -87,6 +89,7 @@ public final class UpdateCardsResponse {
             String stampIcon,
             int stampsRequired,
             String stripColor,
+            double stripOpacity,
             String stripPreset,
             String stripType,
             String textColor,
@@ -110,6 +113,7 @@ public final class UpdateCardsResponse {
         this.stampIcon = stampIcon;
         this.stampsRequired = stampsRequired;
         this.stripColor = stripColor;
+        this.stripOpacity = stripOpacity;
         this.stripPreset = stripPreset;
         this.stripType = stripType;
         this.textColor = textColor;
@@ -262,6 +266,14 @@ public final class UpdateCardsResponse {
     }
 
     /**
+     * @return Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through
+     */
+    @JsonProperty("strip_opacity")
+    public double getStripOpacity() {
+        return stripOpacity;
+    }
+
+    /**
      * @return Preset strip image identifier (when strip_type is 'preset')
      */
     @JsonProperty("strip_preset")
@@ -323,6 +335,7 @@ public final class UpdateCardsResponse {
                 && stampIcon.equals(other.stampIcon)
                 && stampsRequired == other.stampsRequired
                 && stripColor.equals(other.stripColor)
+                && stripOpacity == other.stripOpacity
                 && stripPreset.equals(other.stripPreset)
                 && stripType.equals(other.stripType)
                 && textColor.equals(other.textColor)
@@ -350,6 +363,7 @@ public final class UpdateCardsResponse {
                 this.stampIcon,
                 this.stampsRequired,
                 this.stripColor,
+                this.stripOpacity,
                 this.stripPreset,
                 this.stripType,
                 this.textColor,
@@ -483,7 +497,14 @@ public final class UpdateCardsResponse {
         /**
          * <p>Hex colour for the strip (when strip_type is 'color')</p>
          */
-        StripPresetStage stripColor(@NotNull String stripColor);
+        StripOpacityStage stripColor(@NotNull String stripColor);
+    }
+
+    public interface StripOpacityStage {
+        /**
+         * <p>Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through</p>
+         */
+        StripPresetStage stripOpacity(double stripOpacity);
     }
 
     public interface StripPresetStage {
@@ -550,6 +571,7 @@ public final class UpdateCardsResponse {
                     StampIconStage,
                     StampsRequiredStage,
                     StripColorStage,
+                    StripOpacityStage,
                     StripPresetStage,
                     StripTypeStage,
                     TextColorStage,
@@ -589,6 +611,8 @@ public final class UpdateCardsResponse {
 
         private String stripColor;
 
+        private double stripOpacity;
+
         private String stripPreset;
 
         private String stripType;
@@ -624,6 +648,7 @@ public final class UpdateCardsResponse {
             stampIcon(other.getStampIcon());
             stampsRequired(other.getStampsRequired());
             stripColor(other.getStripColor());
+            stripOpacity(other.getStripOpacity());
             stripPreset(other.getStripPreset());
             stripType(other.getStripType());
             textColor(other.getTextColor());
@@ -814,8 +839,19 @@ public final class UpdateCardsResponse {
          */
         @java.lang.Override
         @JsonSetter("strip_color")
-        public StripPresetStage stripColor(@NotNull String stripColor) {
+        public StripOpacityStage stripColor(@NotNull String stripColor) {
             this.stripColor = Objects.requireNonNull(stripColor, "stripColor must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("strip_opacity")
+        public StripPresetStage stripOpacity(double stripOpacity) {
+            this.stripOpacity = stripOpacity;
             return this;
         }
 
@@ -919,6 +955,7 @@ public final class UpdateCardsResponse {
                     stampIcon,
                     stampsRequired,
                     stripColor,
+                    stripOpacity,
                     stripPreset,
                     stripType,
                     textColor,
