@@ -13,6 +13,7 @@ import com.getleal.api.resources.posters.PostersClient;
 import com.getleal.api.resources.rewards.RewardsClient;
 import com.getleal.api.resources.status.StatusClient;
 import com.getleal.api.resources.stores.StoresClient;
+import com.getleal.api.resources.webhooksubscriptions.WebhookSubscriptionsClient;
 import java.util.function.Supplier;
 
 public class Leal {
@@ -32,6 +33,8 @@ public class Leal {
 
     protected final Supplier<RewardsClient> rewardsClient;
 
+    protected final Supplier<WebhookSubscriptionsClient> webhookSubscriptionsClient;
+
     protected final Supplier<StatusClient> statusClient;
 
     public Leal(ClientOptions clientOptions) {
@@ -43,6 +46,7 @@ public class Leal {
         this.locationsClient = Suppliers.memoize(() -> new LocationsClient(clientOptions));
         this.postersClient = Suppliers.memoize(() -> new PostersClient(clientOptions));
         this.rewardsClient = Suppliers.memoize(() -> new RewardsClient(clientOptions));
+        this.webhookSubscriptionsClient = Suppliers.memoize(() -> new WebhookSubscriptionsClient(clientOptions));
         this.statusClient = Suppliers.memoize(() -> new StatusClient(clientOptions));
     }
 
@@ -72,6 +76,10 @@ public class Leal {
 
     public RewardsClient rewards() {
         return this.rewardsClient.get();
+    }
+
+    public WebhookSubscriptionsClient webhookSubscriptions() {
+        return this.webhookSubscriptionsClient.get();
     }
 
     public StatusClient status() {

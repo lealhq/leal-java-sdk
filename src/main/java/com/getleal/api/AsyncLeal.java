@@ -13,6 +13,7 @@ import com.getleal.api.resources.posters.AsyncPostersClient;
 import com.getleal.api.resources.rewards.AsyncRewardsClient;
 import com.getleal.api.resources.status.AsyncStatusClient;
 import com.getleal.api.resources.stores.AsyncStoresClient;
+import com.getleal.api.resources.webhooksubscriptions.AsyncWebhookSubscriptionsClient;
 import java.util.function.Supplier;
 
 public class AsyncLeal {
@@ -32,6 +33,8 @@ public class AsyncLeal {
 
     protected final Supplier<AsyncRewardsClient> rewardsClient;
 
+    protected final Supplier<AsyncWebhookSubscriptionsClient> webhookSubscriptionsClient;
+
     protected final Supplier<AsyncStatusClient> statusClient;
 
     public AsyncLeal(ClientOptions clientOptions) {
@@ -43,6 +46,7 @@ public class AsyncLeal {
         this.locationsClient = Suppliers.memoize(() -> new AsyncLocationsClient(clientOptions));
         this.postersClient = Suppliers.memoize(() -> new AsyncPostersClient(clientOptions));
         this.rewardsClient = Suppliers.memoize(() -> new AsyncRewardsClient(clientOptions));
+        this.webhookSubscriptionsClient = Suppliers.memoize(() -> new AsyncWebhookSubscriptionsClient(clientOptions));
         this.statusClient = Suppliers.memoize(() -> new AsyncStatusClient(clientOptions));
     }
 
@@ -72,6 +76,10 @@ public class AsyncLeal {
 
     public AsyncRewardsClient rewards() {
         return this.rewardsClient.get();
+    }
+
+    public AsyncWebhookSubscriptionsClient webhookSubscriptions() {
+        return this.webhookSubscriptionsClient.get();
     }
 
     public AsyncStatusClient status() {
