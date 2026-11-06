@@ -26,6 +26,8 @@ public final class CreateCustomersRequest {
 
     private final CreateCustomersRequestCustomer customer;
 
+    private final Optional<String> referralCode;
+
     private final Optional<Boolean> sendCardLinks;
 
     private final Map<String, Object> additionalProperties;
@@ -33,10 +35,12 @@ public final class CreateCustomersRequest {
     private CreateCustomersRequest(
             Optional<Integer> cardId,
             CreateCustomersRequestCustomer customer,
+            Optional<String> referralCode,
             Optional<Boolean> sendCardLinks,
             Map<String, Object> additionalProperties) {
         this.cardId = cardId;
         this.customer = customer;
+        this.referralCode = referralCode;
         this.sendCardLinks = sendCardLinks;
         this.additionalProperties = additionalProperties;
     }
@@ -52,6 +56,14 @@ public final class CreateCustomersRequest {
     @JsonProperty("customer")
     public CreateCustomersRequestCustomer getCustomer() {
         return customer;
+    }
+
+    /**
+     * @return Records the new customer as invited by another customer: the code is the last part of that customer's <code>referral_url</code>. Needs <code>card_id</code>, for the same card, with referrals on. Nothing is given now; both customers get their stamps when the new customer's card is first stamped for a visit
+     */
+    @JsonProperty("referral_code")
+    public Optional<String> getReferralCode() {
+        return referralCode;
     }
 
     /**
@@ -76,12 +88,13 @@ public final class CreateCustomersRequest {
     private boolean equalTo(CreateCustomersRequest other) {
         return cardId.equals(other.cardId)
                 && customer.equals(other.customer)
+                && referralCode.equals(other.referralCode)
                 && sendCardLinks.equals(other.sendCardLinks);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.cardId, this.customer, this.sendCardLinks);
+        return Objects.hash(this.cardId, this.customer, this.referralCode, this.sendCardLinks);
     }
 
     @java.lang.Override
@@ -114,6 +127,13 @@ public final class CreateCustomersRequest {
         _FinalStage cardId(Integer cardId);
 
         /**
+         * <p>Records the new customer as invited by another customer: the code is the last part of that customer's <code>referral_url</code>. Needs <code>card_id</code>, for the same card, with referrals on. Nothing is given now; both customers get their stamps when the new customer's card is first stamped for a visit</p>
+         */
+        _FinalStage referralCode(Optional<String> referralCode);
+
+        _FinalStage referralCode(String referralCode);
+
+        /**
          * <p>When true, sends the card links to the customer via email/SMS after enrollment. Note: even without this flag, the response includes <code>apple_wallet_url</code> and <code>google_wallet_url</code> in each customer card object so you can deliver them yourself.</p>
          */
         _FinalStage sendCardLinks(Optional<Boolean> sendCardLinks);
@@ -127,6 +147,8 @@ public final class CreateCustomersRequest {
 
         private Optional<Boolean> sendCardLinks = Optional.empty();
 
+        private Optional<String> referralCode = Optional.empty();
+
         private Optional<Integer> cardId = Optional.empty();
 
         @JsonAnySetter
@@ -138,6 +160,7 @@ public final class CreateCustomersRequest {
         public Builder from(CreateCustomersRequest other) {
             cardId(other.getCardId());
             customer(other.getCustomer());
+            referralCode(other.getReferralCode());
             sendCardLinks(other.getSendCardLinks());
             return this;
         }
@@ -170,6 +193,26 @@ public final class CreateCustomersRequest {
         }
 
         /**
+         * <p>Records the new customer as invited by another customer: the code is the last part of that customer's <code>referral_url</code>. Needs <code>card_id</code>, for the same card, with referrals on. Nothing is given now; both customers get their stamps when the new customer's card is first stamped for a visit</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referralCode(String referralCode) {
+            this.referralCode = Optional.ofNullable(referralCode);
+            return this;
+        }
+
+        /**
+         * <p>Records the new customer as invited by another customer: the code is the last part of that customer's <code>referral_url</code>. Needs <code>card_id</code>, for the same card, with referrals on. Nothing is given now; both customers get their stamps when the new customer's card is first stamped for a visit</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referral_code", nulls = Nulls.SKIP)
+        public _FinalStage referralCode(Optional<String> referralCode) {
+            this.referralCode = referralCode;
+            return this;
+        }
+
+        /**
          * <p>Loyalty card ID to auto-enroll the customer in</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -191,7 +234,7 @@ public final class CreateCustomersRequest {
 
         @java.lang.Override
         public CreateCustomersRequest build() {
-            return new CreateCustomersRequest(cardId, customer, sendCardLinks, additionalProperties);
+            return new CreateCustomersRequest(cardId, customer, referralCode, sendCardLinks, additionalProperties);
         }
 
         @java.lang.Override

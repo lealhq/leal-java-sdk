@@ -48,7 +48,7 @@ public final class ListCustomersRequest {
     }
 
     /**
-     * @return Search query to filter customers by name, email, phone, card code (barcode), or external reference ID
+     * @return Search query to filter customers by name, email, phone, card code (barcode, or the full scanned QR text), or external reference ID
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
@@ -147,7 +147,7 @@ public final class ListCustomersRequest {
         }
 
         /**
-         * <p>Search query to filter customers by name, email, phone, card code (barcode), or external reference ID</p>
+         * <p>Search query to filter customers by name, email, phone, card code (barcode, or the full scanned QR text), or external reference ID</p>
          */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {

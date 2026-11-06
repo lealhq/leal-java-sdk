@@ -45,7 +45,9 @@ public class RawCustomersClient {
 
     /**
      * Returns a paginated list of customers for the store. Use the <code>search</code> parameter to filter
-     * by name, email, phone, card code (barcode), or external reference ID. Alternatively, pass
+     * by name, email, phone, card code (barcode), or external reference ID. A scanned wallet pass
+     * QR can be passed as it is: newer passes hold a link with the card code after the <code>#</code>, and
+     * that is matched to the card exactly. Alternatively, pass
      * <code>source</code> AND <code>external_id</code> together to perform an exact lookup by an external reference -
      * the response will contain at most one customer.
      */
@@ -55,7 +57,9 @@ public class RawCustomersClient {
 
     /**
      * Returns a paginated list of customers for the store. Use the <code>search</code> parameter to filter
-     * by name, email, phone, card code (barcode), or external reference ID. Alternatively, pass
+     * by name, email, phone, card code (barcode), or external reference ID. A scanned wallet pass
+     * QR can be passed as it is: newer passes hold a link with the card code after the <code>#</code>, and
+     * that is matched to the card exactly. Alternatively, pass
      * <code>source</code> AND <code>external_id</code> together to perform an exact lookup by an external reference -
      * the response will contain at most one customer.
      */
@@ -65,7 +69,9 @@ public class RawCustomersClient {
 
     /**
      * Returns a paginated list of customers for the store. Use the <code>search</code> parameter to filter
-     * by name, email, phone, card code (barcode), or external reference ID. Alternatively, pass
+     * by name, email, phone, card code (barcode), or external reference ID. A scanned wallet pass
+     * QR can be passed as it is: newer passes hold a link with the card code after the <code>#</code>, and
+     * that is matched to the card exactly. Alternatively, pass
      * <code>source</code> AND <code>external_id</code> together to perform an exact lookup by an external reference -
      * the response will contain at most one customer.
      */
@@ -75,7 +81,9 @@ public class RawCustomersClient {
 
     /**
      * Returns a paginated list of customers for the store. Use the <code>search</code> parameter to filter
-     * by name, email, phone, card code (barcode), or external reference ID. Alternatively, pass
+     * by name, email, phone, card code (barcode), or external reference ID. A scanned wallet pass
+     * QR can be passed as it is: newer passes hold a link with the card code after the <code>#</code>, and
+     * that is matched to the card exactly. Alternatively, pass
      * <code>source</code> AND <code>external_id</code> together to perform an exact lookup by an external reference -
      * the response will contain at most one customer.
      */

@@ -46,6 +46,12 @@ public final class GetCustomerCardsResponse {
 
     private final double progressPercentage;
 
+    private final String referralUrl;
+
+    private final double referralsCount;
+
+    private final GetCustomerCardsResponseReferredBy referredBy;
+
     private final int stampsCount;
 
     private final int stampsRemaining;
@@ -71,6 +77,9 @@ public final class GetCustomerCardsResponse {
             String issuedAt,
             boolean passInstalled,
             double progressPercentage,
+            String referralUrl,
+            double referralsCount,
+            GetCustomerCardsResponseReferredBy referredBy,
             int stampsCount,
             int stampsRemaining,
             String status,
@@ -89,6 +98,9 @@ public final class GetCustomerCardsResponse {
         this.issuedAt = issuedAt;
         this.passInstalled = passInstalled;
         this.progressPercentage = progressPercentage;
+        this.referralUrl = referralUrl;
+        this.referralsCount = referralsCount;
+        this.referredBy = referredBy;
         this.stampsCount = stampsCount;
         this.stampsRemaining = stampsRemaining;
         this.status = status;
@@ -194,6 +206,27 @@ public final class GetCustomerCardsResponse {
     }
 
     /**
+     * @return The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem
+     */
+    @JsonProperty("referral_url")
+    public String getReferralUrl() {
+        return referralUrl;
+    }
+
+    /**
+     * @return Friends this customer has invited who joined, rewarded or not
+     */
+    @JsonProperty("referrals_count")
+    public double getReferralsCount() {
+        return referralsCount;
+    }
+
+    @JsonProperty("referred_by")
+    public GetCustomerCardsResponseReferredBy getReferredBy() {
+        return referredBy;
+    }
+
+    /**
      * @return Stamps collected so far
      */
     @JsonProperty("stamps_count")
@@ -226,7 +259,7 @@ public final class GetCustomerCardsResponse {
     }
 
     /**
-     * @return Public identifier used in wallet pass URLs
+     * @return The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem
      */
     @JsonProperty("uuid")
     public String getUuid() {
@@ -257,6 +290,9 @@ public final class GetCustomerCardsResponse {
                 && issuedAt.equals(other.issuedAt)
                 && passInstalled == other.passInstalled
                 && progressPercentage == other.progressPercentage
+                && referralUrl.equals(other.referralUrl)
+                && referralsCount == other.referralsCount
+                && referredBy.equals(other.referredBy)
                 && stampsCount == other.stampsCount
                 && stampsRemaining == other.stampsRemaining
                 && status.equals(other.status)
@@ -279,6 +315,9 @@ public final class GetCustomerCardsResponse {
                 this.issuedAt,
                 this.passInstalled,
                 this.progressPercentage,
+                this.referralUrl,
+                this.referralsCount,
+                this.referredBy,
                 this.stampsCount,
                 this.stampsRemaining,
                 this.status,
@@ -371,7 +410,25 @@ public final class GetCustomerCardsResponse {
         /**
          * <p>Completion towards the next reward, 0 to 100</p>
          */
-        StampsCountStage progressPercentage(double progressPercentage);
+        ReferralUrlStage progressPercentage(double progressPercentage);
+    }
+
+    public interface ReferralUrlStage {
+        /**
+         * <p>The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem</p>
+         */
+        ReferralsCountStage referralUrl(@NotNull String referralUrl);
+    }
+
+    public interface ReferralsCountStage {
+        /**
+         * <p>Friends this customer has invited who joined, rewarded or not</p>
+         */
+        ReferredByStage referralsCount(double referralsCount);
+    }
+
+    public interface ReferredByStage {
+        StampsCountStage referredBy(@NotNull GetCustomerCardsResponseReferredBy referredBy);
     }
 
     public interface StampsCountStage {
@@ -404,7 +461,7 @@ public final class GetCustomerCardsResponse {
 
     public interface UuidStage {
         /**
-         * <p>Public identifier used in wallet pass URLs</p>
+         * <p>The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem</p>
          */
         _FinalStage uuid(@NotNull String uuid);
     }
@@ -439,6 +496,9 @@ public final class GetCustomerCardsResponse {
                     IssuedAtStage,
                     PassInstalledStage,
                     ProgressPercentageStage,
+                    ReferralUrlStage,
+                    ReferralsCountStage,
+                    ReferredByStage,
                     StampsCountStage,
                     StampsRemainingStage,
                     StatusStage,
@@ -466,6 +526,12 @@ public final class GetCustomerCardsResponse {
         private boolean passInstalled;
 
         private double progressPercentage;
+
+        private String referralUrl;
+
+        private double referralsCount;
+
+        private GetCustomerCardsResponseReferredBy referredBy;
 
         private int stampsCount;
 
@@ -498,6 +564,9 @@ public final class GetCustomerCardsResponse {
             issuedAt(other.getIssuedAt());
             passInstalled(other.getPassInstalled());
             progressPercentage(other.getProgressPercentage());
+            referralUrl(other.getReferralUrl());
+            referralsCount(other.getReferralsCount());
+            referredBy(other.getReferredBy());
             stampsCount(other.getStampsCount());
             stampsRemaining(other.getStampsRemaining());
             status(other.getStatus());
@@ -622,8 +691,37 @@ public final class GetCustomerCardsResponse {
          */
         @java.lang.Override
         @JsonSetter("progress_percentage")
-        public StampsCountStage progressPercentage(double progressPercentage) {
+        public ReferralUrlStage progressPercentage(double progressPercentage) {
             this.progressPercentage = progressPercentage;
+            return this;
+        }
+
+        /**
+         * <p>The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referral_url")
+        public ReferralsCountStage referralUrl(@NotNull String referralUrl) {
+            this.referralUrl = Objects.requireNonNull(referralUrl, "referralUrl must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Friends this customer has invited who joined, rewarded or not</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referrals_count")
+        public ReferredByStage referralsCount(double referralsCount) {
+            this.referralsCount = referralsCount;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("referred_by")
+        public StampsCountStage referredBy(@NotNull GetCustomerCardsResponseReferredBy referredBy) {
+            this.referredBy = Objects.requireNonNull(referredBy, "referredBy must not be null");
             return this;
         }
 
@@ -672,7 +770,7 @@ public final class GetCustomerCardsResponse {
         }
 
         /**
-         * <p>Public identifier used in wallet pass URLs</p>
+         * <p>The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -732,6 +830,9 @@ public final class GetCustomerCardsResponse {
                     issuedAt,
                     passInstalled,
                     progressPercentage,
+                    referralUrl,
+                    referralsCount,
+                    referredBy,
                     stampsCount,
                     stampsRemaining,
                     status,

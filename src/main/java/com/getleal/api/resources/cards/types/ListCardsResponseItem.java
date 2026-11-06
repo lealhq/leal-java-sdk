@@ -42,6 +42,14 @@ public final class ListCardsResponseItem {
 
     private final String name;
 
+    private final String qrStyle;
+
+    private final double refereeStamps;
+
+    private final boolean referralsEnabled;
+
+    private final double referrerStamps;
+
     private final int rewardsCount;
 
     private final boolean showMemberField;
@@ -81,6 +89,10 @@ public final class ListCardsResponseItem {
             int id,
             int initialStamps,
             String name,
+            String qrStyle,
+            double refereeStamps,
+            boolean referralsEnabled,
+            double referrerStamps,
             int rewardsCount,
             boolean showMemberField,
             boolean showStampsToRewardField,
@@ -105,6 +117,10 @@ public final class ListCardsResponseItem {
         this.id = id;
         this.initialStamps = initialStamps;
         this.name = name;
+        this.qrStyle = qrStyle;
+        this.refereeStamps = refereeStamps;
+        this.referralsEnabled = referralsEnabled;
+        this.referrerStamps = referrerStamps;
         this.rewardsCount = rewardsCount;
         this.showMemberField = showMemberField;
         this.showStampsToRewardField = showStampsToRewardField;
@@ -199,6 +215,38 @@ public final class ListCardsResponseItem {
     @JsonProperty("name")
     public String getName() {
         return name;
+    }
+
+    /**
+     * @return What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by <code>search</code>) or 'code' (the bare card code). Cards created before referrals use 'code'
+     */
+    @JsonProperty("qr_style")
+    public String getQrStyle() {
+        return qrStyle;
+    }
+
+    /**
+     * @return Stamps the invited friend gets when the referral pays out
+     */
+    @JsonProperty("referee_stamps")
+    public double getRefereeStamps() {
+        return refereeStamps;
+    }
+
+    /**
+     * @return Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up
+     */
+    @JsonProperty("referrals_enabled")
+    public boolean getReferralsEnabled() {
+        return referralsEnabled;
+    }
+
+    /**
+     * @return Stamps the inviting customer gets when the referral pays out
+     */
+    @JsonProperty("referrer_stamps")
+    public double getReferrerStamps() {
+        return referrerStamps;
     }
 
     /**
@@ -327,6 +375,10 @@ public final class ListCardsResponseItem {
                 && id == other.id
                 && initialStamps == other.initialStamps
                 && name.equals(other.name)
+                && qrStyle.equals(other.qrStyle)
+                && refereeStamps == other.refereeStamps
+                && referralsEnabled == other.referralsEnabled
+                && referrerStamps == other.referrerStamps
                 && rewardsCount == other.rewardsCount
                 && showMemberField == other.showMemberField
                 && showStampsToRewardField == other.showStampsToRewardField
@@ -355,6 +407,10 @@ public final class ListCardsResponseItem {
                 this.id,
                 this.initialStamps,
                 this.name,
+                this.qrStyle,
+                this.refereeStamps,
+                this.referralsEnabled,
+                this.referrerStamps,
                 this.rewardsCount,
                 this.showMemberField,
                 this.showStampsToRewardField,
@@ -441,7 +497,35 @@ public final class ListCardsResponseItem {
         /**
          * <p>Card name (e.g. 'Coffee Loyalty Card')</p>
          */
-        RewardsCountStage name(@NotNull String name);
+        QrStyleStage name(@NotNull String name);
+    }
+
+    public interface QrStyleStage {
+        /**
+         * <p>What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by <code>search</code>) or 'code' (the bare card code). Cards created before referrals use 'code'</p>
+         */
+        RefereeStampsStage qrStyle(@NotNull String qrStyle);
+    }
+
+    public interface RefereeStampsStage {
+        /**
+         * <p>Stamps the invited friend gets when the referral pays out</p>
+         */
+        ReferralsEnabledStage refereeStamps(double refereeStamps);
+    }
+
+    public interface ReferralsEnabledStage {
+        /**
+         * <p>Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up</p>
+         */
+        ReferrerStampsStage referralsEnabled(boolean referralsEnabled);
+    }
+
+    public interface ReferrerStampsStage {
+        /**
+         * <p>Stamps the inviting customer gets when the referral pays out</p>
+         */
+        RewardsCountStage referrerStamps(double referrerStamps);
     }
 
     public interface RewardsCountStage {
@@ -563,6 +647,10 @@ public final class ListCardsResponseItem {
                     IdStage,
                     InitialStampsStage,
                     NameStage,
+                    QrStyleStage,
+                    RefereeStampsStage,
+                    ReferralsEnabledStage,
+                    ReferrerStampsStage,
                     RewardsCountStage,
                     ShowMemberFieldStage,
                     ShowStampsToRewardFieldStage,
@@ -594,6 +682,14 @@ public final class ListCardsResponseItem {
         private int initialStamps;
 
         private String name;
+
+        private String qrStyle;
+
+        private double refereeStamps;
+
+        private boolean referralsEnabled;
+
+        private double referrerStamps;
 
         private int rewardsCount;
 
@@ -640,6 +736,10 @@ public final class ListCardsResponseItem {
             id(other.getId());
             initialStamps(other.getInitialStamps());
             name(other.getName());
+            qrStyle(other.getQrStyle());
+            refereeStamps(other.getRefereeStamps());
+            referralsEnabled(other.getReferralsEnabled());
+            referrerStamps(other.getReferrerStamps());
             rewardsCount(other.getRewardsCount());
             showMemberField(other.getShowMemberField());
             showStampsToRewardField(other.getShowStampsToRewardField());
@@ -750,8 +850,52 @@ public final class ListCardsResponseItem {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public RewardsCountStage name(@NotNull String name) {
+        public QrStyleStage name(@NotNull String name) {
             this.name = Objects.requireNonNull(name, "name must not be null");
+            return this;
+        }
+
+        /**
+         * <p>What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by <code>search</code>) or 'code' (the bare card code). Cards created before referrals use 'code'</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("qr_style")
+        public RefereeStampsStage qrStyle(@NotNull String qrStyle) {
+            this.qrStyle = Objects.requireNonNull(qrStyle, "qrStyle must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Stamps the invited friend gets when the referral pays out</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referee_stamps")
+        public ReferralsEnabledStage refereeStamps(double refereeStamps) {
+            this.refereeStamps = refereeStamps;
+            return this;
+        }
+
+        /**
+         * <p>Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referrals_enabled")
+        public ReferrerStampsStage referralsEnabled(boolean referralsEnabled) {
+            this.referralsEnabled = referralsEnabled;
+            return this;
+        }
+
+        /**
+         * <p>Stamps the inviting customer gets when the referral pays out</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referrer_stamps")
+        public RewardsCountStage referrerStamps(double referrerStamps) {
+            this.referrerStamps = referrerStamps;
             return this;
         }
 
@@ -947,6 +1091,10 @@ public final class ListCardsResponseItem {
                     id,
                     initialStamps,
                     name,
+                    qrStyle,
+                    refereeStamps,
+                    referralsEnabled,
+                    referrerStamps,
                     rewardsCount,
                     showMemberField,
                     showStampsToRewardField,

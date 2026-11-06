@@ -141,16 +141,20 @@ public class CustomerCardsClient {
     }
 
     /**
-     * Adds stamps to a customer's loyalty card. Triggers ledger entries, wallet pass updates,
-     * and push notifications. Pass <code>skip_notifications</code> to stamp silently.
+     * Adds stamps to a customer's loyalty card. Triggers ledger entries (<code>entry_type</code> <code>api</code>),
+     * wallet pass updates, and push notifications. Pass <code>skip_notifications</code> to stamp silently.
+     * Call it for real visits or purchases: if this customer joined with a friend's invite, the
+     * first call pays out the referral to both of them.
      */
     public StampCustomerCardsResponse stamp(int accountId, int customerId, int id, StampCustomerCardsRequest request) {
         return this.rawClient.stamp(accountId, customerId, id, request).body();
     }
 
     /**
-     * Adds stamps to a customer's loyalty card. Triggers ledger entries, wallet pass updates,
-     * and push notifications. Pass <code>skip_notifications</code> to stamp silently.
+     * Adds stamps to a customer's loyalty card. Triggers ledger entries (<code>entry_type</code> <code>api</code>),
+     * wallet pass updates, and push notifications. Pass <code>skip_notifications</code> to stamp silently.
+     * Call it for real visits or purchases: if this customer joined with a friend's invite, the
+     * first call pays out the referral to both of them.
      */
     public StampCustomerCardsResponse stamp(
             int accountId, int customerId, int id, StampCustomerCardsRequest request, RequestOptions requestOptions) {

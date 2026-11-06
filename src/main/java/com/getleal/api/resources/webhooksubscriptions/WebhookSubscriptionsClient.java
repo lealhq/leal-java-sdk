@@ -84,7 +84,7 @@ public class WebhookSubscriptionsClient {
     /**
      * Subscribes a URL to one or more events. The response includes the signing <code>secret</code>; store it to
      * verify deliveries. The URL must be publicly reachable over https.
-     * <p>Events: <code>customer.created</code>, <code>customer.updated</code>, <code>customer_card.created</code>, <code>stamp.earned</code>, <code>stamp.removed</code>, <code>reward.unlocked</code>, <code>reward.redeemed</code>, or <code>*</code> for all of them.</p>
+     * <p>Events: <code>customer.created</code>, <code>customer.updated</code>, <code>customer_card.created</code>, <code>stamp.earned</code>, <code>stamp.removed</code>, <code>reward.unlocked</code>, <code>reward.redeemed</code>, <code>referral.created</code>, <code>referral.rewarded</code>, or <code>*</code> for all of them.</p>
      */
     public PostApiV1AccountsAccountIdWebhookSubscriptionsResponse postApiV1AccountsAccountIdWebhookSubscriptions(
             int accountId, PostApiV1AccountsAccountIdWebhookSubscriptionsRequest request) {
@@ -96,7 +96,7 @@ public class WebhookSubscriptionsClient {
     /**
      * Subscribes a URL to one or more events. The response includes the signing <code>secret</code>; store it to
      * verify deliveries. The URL must be publicly reachable over https.
-     * <p>Events: <code>customer.created</code>, <code>customer.updated</code>, <code>customer_card.created</code>, <code>stamp.earned</code>, <code>stamp.removed</code>, <code>reward.unlocked</code>, <code>reward.redeemed</code>, or <code>*</code> for all of them.</p>
+     * <p>Events: <code>customer.created</code>, <code>customer.updated</code>, <code>customer_card.created</code>, <code>stamp.earned</code>, <code>stamp.removed</code>, <code>reward.unlocked</code>, <code>reward.redeemed</code>, <code>referral.created</code>, <code>referral.rewarded</code>, or <code>*</code> for all of them.</p>
      */
     public PostApiV1AccountsAccountIdWebhookSubscriptionsResponse postApiV1AccountsAccountIdWebhookSubscriptions(
             int accountId,

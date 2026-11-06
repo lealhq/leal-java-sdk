@@ -34,6 +34,14 @@ public final class CreateCardsRequestCard {
 
     private final String name;
 
+    private final Optional<CreateCardsRequestCardQrStyle> qrStyle;
+
+    private final Optional<Double> refereeStamps;
+
+    private final Optional<Boolean> referralsEnabled;
+
+    private final Optional<Double> referrerStamps;
+
     private final Optional<Boolean> showMemberField;
 
     private final Optional<Boolean> showStampsToRewardField;
@@ -65,6 +73,10 @@ public final class CreateCardsRequestCard {
             Optional<String> headerText,
             Optional<Integer> initialStamps,
             String name,
+            Optional<CreateCardsRequestCardQrStyle> qrStyle,
+            Optional<Double> refereeStamps,
+            Optional<Boolean> referralsEnabled,
+            Optional<Double> referrerStamps,
             Optional<Boolean> showMemberField,
             Optional<Boolean> showStampsToRewardField,
             Optional<String> stampBackgroundColor,
@@ -83,6 +95,10 @@ public final class CreateCardsRequestCard {
         this.headerText = headerText;
         this.initialStamps = initialStamps;
         this.name = name;
+        this.qrStyle = qrStyle;
+        this.refereeStamps = refereeStamps;
+        this.referralsEnabled = referralsEnabled;
+        this.referrerStamps = referrerStamps;
         this.showMemberField = showMemberField;
         this.showStampsToRewardField = showStampsToRewardField;
         this.stampBackgroundColor = stampBackgroundColor;
@@ -143,6 +159,38 @@ public final class CreateCardsRequestCard {
     @JsonProperty("name")
     public String getName() {
         return name;
+    }
+
+    /**
+     * @return What the wallet pass QR holds. Defaults to 'link' for new cards
+     */
+    @JsonProperty("qr_style")
+    public Optional<CreateCardsRequestCardQrStyle> getQrStyle() {
+        return qrStyle;
+    }
+
+    /**
+     * @return Stamps the invited friend gets on their first stamped visit (&gt;= 0 and &lt; stamps_required, default 1)
+     */
+    @JsonProperty("referee_stamps")
+    public Optional<Double> getRefereeStamps() {
+        return refereeStamps;
+    }
+
+    /**
+     * @return Let customers invite friends from the back of their pass (default false)
+     */
+    @JsonProperty("referrals_enabled")
+    public Optional<Boolean> getReferralsEnabled() {
+        return referralsEnabled;
+    }
+
+    /**
+     * @return Stamps the inviting customer gets when the friend's first visit is stamped (&gt;= 0 and &lt; stamps_required, default 1)
+     */
+    @JsonProperty("referrer_stamps")
+    public Optional<Double> getReferrerStamps() {
+        return referrerStamps;
     }
 
     /**
@@ -251,6 +299,10 @@ public final class CreateCardsRequestCard {
                 && headerText.equals(other.headerText)
                 && initialStamps.equals(other.initialStamps)
                 && name.equals(other.name)
+                && qrStyle.equals(other.qrStyle)
+                && refereeStamps.equals(other.refereeStamps)
+                && referralsEnabled.equals(other.referralsEnabled)
+                && referrerStamps.equals(other.referrerStamps)
                 && showMemberField.equals(other.showMemberField)
                 && showStampsToRewardField.equals(other.showStampsToRewardField)
                 && stampBackgroundColor.equals(other.stampBackgroundColor)
@@ -273,6 +325,10 @@ public final class CreateCardsRequestCard {
                 this.headerText,
                 this.initialStamps,
                 this.name,
+                this.qrStyle,
+                this.refereeStamps,
+                this.referralsEnabled,
+                this.referrerStamps,
                 this.showMemberField,
                 this.showStampsToRewardField,
                 this.stampBackgroundColor,
@@ -345,6 +401,34 @@ public final class CreateCardsRequestCard {
         _FinalStage initialStamps(Optional<Integer> initialStamps);
 
         _FinalStage initialStamps(Integer initialStamps);
+
+        /**
+         * <p>What the wallet pass QR holds. Defaults to 'link' for new cards</p>
+         */
+        _FinalStage qrStyle(Optional<CreateCardsRequestCardQrStyle> qrStyle);
+
+        _FinalStage qrStyle(CreateCardsRequestCardQrStyle qrStyle);
+
+        /**
+         * <p>Stamps the invited friend gets on their first stamped visit (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         */
+        _FinalStage refereeStamps(Optional<Double> refereeStamps);
+
+        _FinalStage refereeStamps(Double refereeStamps);
+
+        /**
+         * <p>Let customers invite friends from the back of their pass (default false)</p>
+         */
+        _FinalStage referralsEnabled(Optional<Boolean> referralsEnabled);
+
+        _FinalStage referralsEnabled(Boolean referralsEnabled);
+
+        /**
+         * <p>Stamps the inviting customer gets when the friend's first visit is stamped (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         */
+        _FinalStage referrerStamps(Optional<Double> referrerStamps);
+
+        _FinalStage referrerStamps(Double referrerStamps);
 
         /**
          * <p>Whether wallet passes show the member name field</p>
@@ -450,6 +534,14 @@ public final class CreateCardsRequestCard {
 
         private Optional<Boolean> showMemberField = Optional.empty();
 
+        private Optional<Double> referrerStamps = Optional.empty();
+
+        private Optional<Boolean> referralsEnabled = Optional.empty();
+
+        private Optional<Double> refereeStamps = Optional.empty();
+
+        private Optional<CreateCardsRequestCardQrStyle> qrStyle = Optional.empty();
+
         private Optional<Integer> initialStamps = Optional.empty();
 
         private Optional<String> headerText = Optional.empty();
@@ -473,6 +565,10 @@ public final class CreateCardsRequestCard {
             headerText(other.getHeaderText());
             initialStamps(other.getInitialStamps());
             name(other.getName());
+            qrStyle(other.getQrStyle());
+            refereeStamps(other.getRefereeStamps());
+            referralsEnabled(other.getReferralsEnabled());
+            referrerStamps(other.getReferrerStamps());
             showMemberField(other.getShowMemberField());
             showStampsToRewardField(other.getShowStampsToRewardField());
             stampBackgroundColor(other.getStampBackgroundColor());
@@ -719,6 +815,86 @@ public final class CreateCardsRequestCard {
         }
 
         /**
+         * <p>Stamps the inviting customer gets when the friend's first visit is stamped (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referrerStamps(Double referrerStamps) {
+            this.referrerStamps = Optional.ofNullable(referrerStamps);
+            return this;
+        }
+
+        /**
+         * <p>Stamps the inviting customer gets when the friend's first visit is stamped (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referrer_stamps", nulls = Nulls.SKIP)
+        public _FinalStage referrerStamps(Optional<Double> referrerStamps) {
+            this.referrerStamps = referrerStamps;
+            return this;
+        }
+
+        /**
+         * <p>Let customers invite friends from the back of their pass (default false)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referralsEnabled(Boolean referralsEnabled) {
+            this.referralsEnabled = Optional.ofNullable(referralsEnabled);
+            return this;
+        }
+
+        /**
+         * <p>Let customers invite friends from the back of their pass (default false)</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referrals_enabled", nulls = Nulls.SKIP)
+        public _FinalStage referralsEnabled(Optional<Boolean> referralsEnabled) {
+            this.referralsEnabled = referralsEnabled;
+            return this;
+        }
+
+        /**
+         * <p>Stamps the invited friend gets on their first stamped visit (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage refereeStamps(Double refereeStamps) {
+            this.refereeStamps = Optional.ofNullable(refereeStamps);
+            return this;
+        }
+
+        /**
+         * <p>Stamps the invited friend gets on their first stamped visit (&gt;= 0 and &lt; stamps_required, default 1)</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referee_stamps", nulls = Nulls.SKIP)
+        public _FinalStage refereeStamps(Optional<Double> refereeStamps) {
+            this.refereeStamps = refereeStamps;
+            return this;
+        }
+
+        /**
+         * <p>What the wallet pass QR holds. Defaults to 'link' for new cards</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage qrStyle(CreateCardsRequestCardQrStyle qrStyle) {
+            this.qrStyle = Optional.ofNullable(qrStyle);
+            return this;
+        }
+
+        /**
+         * <p>What the wallet pass QR holds. Defaults to 'link' for new cards</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "qr_style", nulls = Nulls.SKIP)
+        public _FinalStage qrStyle(Optional<CreateCardsRequestCardQrStyle> qrStyle) {
+            this.qrStyle = qrStyle;
+            return this;
+        }
+
+        /**
          * <p>Number of stamps pre-filled on new customer cards (must be &gt;= 0 and &lt; stamps_required)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -827,6 +1003,10 @@ public final class CreateCardsRequestCard {
                     headerText,
                     initialStamps,
                     name,
+                    qrStyle,
+                    refereeStamps,
+                    referralsEnabled,
+                    referrerStamps,
                     showMemberField,
                     showStampsToRewardField,
                     stampBackgroundColor,

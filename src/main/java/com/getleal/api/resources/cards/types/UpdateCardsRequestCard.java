@@ -33,6 +33,14 @@ public final class UpdateCardsRequestCard {
 
     private final Optional<String> name;
 
+    private final Optional<UpdateCardsRequestCardQrStyle> qrStyle;
+
+    private final Optional<Double> refereeStamps;
+
+    private final Optional<Boolean> referralsEnabled;
+
+    private final Optional<Double> referrerStamps;
+
     private final Optional<Boolean> showMemberField;
 
     private final Optional<Boolean> showStampsToRewardField;
@@ -64,6 +72,10 @@ public final class UpdateCardsRequestCard {
             Optional<String> headerText,
             Optional<Integer> initialStamps,
             Optional<String> name,
+            Optional<UpdateCardsRequestCardQrStyle> qrStyle,
+            Optional<Double> refereeStamps,
+            Optional<Boolean> referralsEnabled,
+            Optional<Double> referrerStamps,
             Optional<Boolean> showMemberField,
             Optional<Boolean> showStampsToRewardField,
             Optional<String> stampBackgroundColor,
@@ -82,6 +94,10 @@ public final class UpdateCardsRequestCard {
         this.headerText = headerText;
         this.initialStamps = initialStamps;
         this.name = name;
+        this.qrStyle = qrStyle;
+        this.refereeStamps = refereeStamps;
+        this.referralsEnabled = referralsEnabled;
+        this.referrerStamps = referrerStamps;
         this.showMemberField = showMemberField;
         this.showStampsToRewardField = showStampsToRewardField;
         this.stampBackgroundColor = stampBackgroundColor;
@@ -142,6 +158,38 @@ public final class UpdateCardsRequestCard {
     @JsonProperty("name")
     public Optional<String> getName() {
         return name;
+    }
+
+    /**
+     * @return What the wallet pass QR holds. Changing it refreshes installed passes; passes still showing the old QR keep scanning
+     */
+    @JsonProperty("qr_style")
+    public Optional<UpdateCardsRequestCardQrStyle> getQrStyle() {
+        return qrStyle;
+    }
+
+    /**
+     * @return Stamps the invited friend gets (&gt;= 0 and &lt; stamps_required)
+     */
+    @JsonProperty("referee_stamps")
+    public Optional<Double> getRefereeStamps() {
+        return refereeStamps;
+    }
+
+    /**
+     * @return Let customers invite friends from the back of their pass. Installed passes are refreshed, as for any card change
+     */
+    @JsonProperty("referrals_enabled")
+    public Optional<Boolean> getReferralsEnabled() {
+        return referralsEnabled;
+    }
+
+    /**
+     * @return Stamps the inviting customer gets (&gt;= 0 and &lt; stamps_required)
+     */
+    @JsonProperty("referrer_stamps")
+    public Optional<Double> getReferrerStamps() {
+        return referrerStamps;
     }
 
     /**
@@ -250,6 +298,10 @@ public final class UpdateCardsRequestCard {
                 && headerText.equals(other.headerText)
                 && initialStamps.equals(other.initialStamps)
                 && name.equals(other.name)
+                && qrStyle.equals(other.qrStyle)
+                && refereeStamps.equals(other.refereeStamps)
+                && referralsEnabled.equals(other.referralsEnabled)
+                && referrerStamps.equals(other.referrerStamps)
                 && showMemberField.equals(other.showMemberField)
                 && showStampsToRewardField.equals(other.showStampsToRewardField)
                 && stampBackgroundColor.equals(other.stampBackgroundColor)
@@ -272,6 +324,10 @@ public final class UpdateCardsRequestCard {
                 this.headerText,
                 this.initialStamps,
                 this.name,
+                this.qrStyle,
+                this.refereeStamps,
+                this.referralsEnabled,
+                this.referrerStamps,
                 this.showMemberField,
                 this.showStampsToRewardField,
                 this.stampBackgroundColor,
@@ -308,6 +364,14 @@ public final class UpdateCardsRequestCard {
 
         private Optional<String> name = Optional.empty();
 
+        private Optional<UpdateCardsRequestCardQrStyle> qrStyle = Optional.empty();
+
+        private Optional<Double> refereeStamps = Optional.empty();
+
+        private Optional<Boolean> referralsEnabled = Optional.empty();
+
+        private Optional<Double> referrerStamps = Optional.empty();
+
         private Optional<Boolean> showMemberField = Optional.empty();
 
         private Optional<Boolean> showStampsToRewardField = Optional.empty();
@@ -342,6 +406,10 @@ public final class UpdateCardsRequestCard {
             headerText(other.getHeaderText());
             initialStamps(other.getInitialStamps());
             name(other.getName());
+            qrStyle(other.getQrStyle());
+            refereeStamps(other.getRefereeStamps());
+            referralsEnabled(other.getReferralsEnabled());
+            referrerStamps(other.getReferrerStamps());
             showMemberField(other.getShowMemberField());
             showStampsToRewardField(other.getShowStampsToRewardField());
             stampBackgroundColor(other.getStampBackgroundColor());
@@ -437,6 +505,62 @@ public final class UpdateCardsRequestCard {
 
         public Builder name(String name) {
             this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        /**
+         * <p>What the wallet pass QR holds. Changing it refreshes installed passes; passes still showing the old QR keep scanning</p>
+         */
+        @JsonSetter(value = "qr_style", nulls = Nulls.SKIP)
+        public Builder qrStyle(Optional<UpdateCardsRequestCardQrStyle> qrStyle) {
+            this.qrStyle = qrStyle;
+            return this;
+        }
+
+        public Builder qrStyle(UpdateCardsRequestCardQrStyle qrStyle) {
+            this.qrStyle = Optional.ofNullable(qrStyle);
+            return this;
+        }
+
+        /**
+         * <p>Stamps the invited friend gets (&gt;= 0 and &lt; stamps_required)</p>
+         */
+        @JsonSetter(value = "referee_stamps", nulls = Nulls.SKIP)
+        public Builder refereeStamps(Optional<Double> refereeStamps) {
+            this.refereeStamps = refereeStamps;
+            return this;
+        }
+
+        public Builder refereeStamps(Double refereeStamps) {
+            this.refereeStamps = Optional.ofNullable(refereeStamps);
+            return this;
+        }
+
+        /**
+         * <p>Let customers invite friends from the back of their pass. Installed passes are refreshed, as for any card change</p>
+         */
+        @JsonSetter(value = "referrals_enabled", nulls = Nulls.SKIP)
+        public Builder referralsEnabled(Optional<Boolean> referralsEnabled) {
+            this.referralsEnabled = referralsEnabled;
+            return this;
+        }
+
+        public Builder referralsEnabled(Boolean referralsEnabled) {
+            this.referralsEnabled = Optional.ofNullable(referralsEnabled);
+            return this;
+        }
+
+        /**
+         * <p>Stamps the inviting customer gets (&gt;= 0 and &lt; stamps_required)</p>
+         */
+        @JsonSetter(value = "referrer_stamps", nulls = Nulls.SKIP)
+        public Builder referrerStamps(Optional<Double> referrerStamps) {
+            this.referrerStamps = referrerStamps;
+            return this;
+        }
+
+        public Builder referrerStamps(Double referrerStamps) {
+            this.referrerStamps = Optional.ofNullable(referrerStamps);
             return this;
         }
 
@@ -602,6 +726,10 @@ public final class UpdateCardsRequestCard {
                     headerText,
                     initialStamps,
                     name,
+                    qrStyle,
+                    refereeStamps,
+                    referralsEnabled,
+                    referrerStamps,
                     showMemberField,
                     showStampsToRewardField,
                     stampBackgroundColor,

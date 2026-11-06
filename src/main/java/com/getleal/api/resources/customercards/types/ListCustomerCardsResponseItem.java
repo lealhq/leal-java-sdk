@@ -37,6 +37,8 @@ public final class ListCustomerCardsResponseItem {
 
     private final double progressPercentage;
 
+    private final String referralUrl;
+
     private final int stampsCount;
 
     private final int stampsRemaining;
@@ -59,6 +61,7 @@ public final class ListCustomerCardsResponseItem {
             String issuedAt,
             boolean passInstalled,
             double progressPercentage,
+            String referralUrl,
             int stampsCount,
             int stampsRemaining,
             String status,
@@ -74,6 +77,7 @@ public final class ListCustomerCardsResponseItem {
         this.issuedAt = issuedAt;
         this.passInstalled = passInstalled;
         this.progressPercentage = progressPercentage;
+        this.referralUrl = referralUrl;
         this.stampsCount = stampsCount;
         this.stampsRemaining = stampsRemaining;
         this.status = status;
@@ -155,6 +159,14 @@ public final class ListCustomerCardsResponseItem {
     }
 
     /**
+     * @return The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem
+     */
+    @JsonProperty("referral_url")
+    public String getReferralUrl() {
+        return referralUrl;
+    }
+
+    /**
      * @return Stamps collected so far
      */
     @JsonProperty("stamps_count")
@@ -187,7 +199,7 @@ public final class ListCustomerCardsResponseItem {
     }
 
     /**
-     * @return Public identifier used in wallet pass URLs
+     * @return The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem
      */
     @JsonProperty("uuid")
     public String getUuid() {
@@ -215,6 +227,7 @@ public final class ListCustomerCardsResponseItem {
                 && issuedAt.equals(other.issuedAt)
                 && passInstalled == other.passInstalled
                 && progressPercentage == other.progressPercentage
+                && referralUrl.equals(other.referralUrl)
                 && stampsCount == other.stampsCount
                 && stampsRemaining == other.stampsRemaining
                 && status.equals(other.status)
@@ -234,6 +247,7 @@ public final class ListCustomerCardsResponseItem {
                 this.issuedAt,
                 this.passInstalled,
                 this.progressPercentage,
+                this.referralUrl,
                 this.stampsCount,
                 this.stampsRemaining,
                 this.status,
@@ -312,7 +326,14 @@ public final class ListCustomerCardsResponseItem {
         /**
          * <p>Completion towards the next reward, 0 to 100</p>
          */
-        StampsCountStage progressPercentage(double progressPercentage);
+        ReferralUrlStage progressPercentage(double progressPercentage);
+    }
+
+    public interface ReferralUrlStage {
+        /**
+         * <p>The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem</p>
+         */
+        StampsCountStage referralUrl(@NotNull String referralUrl);
     }
 
     public interface StampsCountStage {
@@ -345,7 +366,7 @@ public final class ListCustomerCardsResponseItem {
 
     public interface UuidStage {
         /**
-         * <p>Public identifier used in wallet pass URLs</p>
+         * <p>The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem</p>
          */
         _FinalStage uuid(@NotNull String uuid);
     }
@@ -369,6 +390,7 @@ public final class ListCustomerCardsResponseItem {
                     IssuedAtStage,
                     PassInstalledStage,
                     ProgressPercentageStage,
+                    ReferralUrlStage,
                     StampsCountStage,
                     StampsRemainingStage,
                     StatusStage,
@@ -392,6 +414,8 @@ public final class ListCustomerCardsResponseItem {
         private boolean passInstalled;
 
         private double progressPercentage;
+
+        private String referralUrl;
 
         private int stampsCount;
 
@@ -419,6 +443,7 @@ public final class ListCustomerCardsResponseItem {
             issuedAt(other.getIssuedAt());
             passInstalled(other.getPassInstalled());
             progressPercentage(other.getProgressPercentage());
+            referralUrl(other.getReferralUrl());
             stampsCount(other.getStampsCount());
             stampsRemaining(other.getStampsRemaining());
             status(other.getStatus());
@@ -521,8 +546,19 @@ public final class ListCustomerCardsResponseItem {
          */
         @java.lang.Override
         @JsonSetter("progress_percentage")
-        public StampsCountStage progressPercentage(double progressPercentage) {
+        public ReferralUrlStage progressPercentage(double progressPercentage) {
             this.progressPercentage = progressPercentage;
+            return this;
+        }
+
+        /**
+         * <p>The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("referral_url")
+        public StampsCountStage referralUrl(@NotNull String referralUrl) {
+            this.referralUrl = Objects.requireNonNull(referralUrl, "referralUrl must not be null");
             return this;
         }
 
@@ -571,7 +607,7 @@ public final class ListCustomerCardsResponseItem {
         }
 
         /**
-         * <p>Public identifier used in wallet pass URLs</p>
+         * <p>The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -593,6 +629,7 @@ public final class ListCustomerCardsResponseItem {
                     issuedAt,
                     passInstalled,
                     progressPercentage,
+                    referralUrl,
                     stampsCount,
                     stampsRemaining,
                     status,
