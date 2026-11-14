@@ -22,11 +22,17 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CreateCardsRequestCard.Builder.class)
 public final class CreateCardsRequestCard {
+    private final Optional<CreateCardsRequestCardApplePassStyle> applePassStyle;
+
     private final Optional<List<String>> auxiliaryFields;
 
     private final Optional<String> cardColor;
 
     private final Optional<String> expiresAt;
+
+    private final Optional<List<String>> featuredActions;
+
+    private final Optional<CreateCardsRequestCardGoogleLogoStyle> googleLogoStyle;
 
     private final Optional<String> headerText;
 
@@ -67,9 +73,12 @@ public final class CreateCardsRequestCard {
     private final Map<String, Object> additionalProperties;
 
     private CreateCardsRequestCard(
+            Optional<CreateCardsRequestCardApplePassStyle> applePassStyle,
             Optional<List<String>> auxiliaryFields,
             Optional<String> cardColor,
             Optional<String> expiresAt,
+            Optional<List<String>> featuredActions,
+            Optional<CreateCardsRequestCardGoogleLogoStyle> googleLogoStyle,
             Optional<String> headerText,
             Optional<Integer> initialStamps,
             String name,
@@ -89,9 +98,12 @@ public final class CreateCardsRequestCard {
             Optional<String> stripType,
             Optional<String> textColor,
             Map<String, Object> additionalProperties) {
+        this.applePassStyle = applePassStyle;
         this.auxiliaryFields = auxiliaryFields;
         this.cardColor = cardColor;
         this.expiresAt = expiresAt;
+        this.featuredActions = featuredActions;
+        this.googleLogoStyle = googleLogoStyle;
         this.headerText = headerText;
         this.initialStamps = initialStamps;
         this.name = name;
@@ -111,6 +123,14 @@ public final class CreateCardsRequestCard {
         this.stripType = stripType;
         this.textColor = textColor;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'
+     */
+    @JsonProperty("apple_pass_style")
+    public Optional<CreateCardsRequestCardApplePassStyle> getApplePassStyle() {
+        return applePassStyle;
     }
 
     /**
@@ -135,6 +155,22 @@ public final class CreateCardsRequestCard {
     @JsonProperty("expires_at")
     public Optional<String> getExpiresAt() {
         return expiresAt;
+    }
+
+    /**
+     * @return Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.
+     */
+    @JsonProperty("featured_actions")
+    public Optional<List<String>> getFeaturedActions() {
+        return featuredActions;
+    }
+
+    /**
+     * @return How the logo sits on Google Wallet. Defaults to 'round'
+     */
+    @JsonProperty("google_logo_style")
+    public Optional<CreateCardsRequestCardGoogleLogoStyle> getGoogleLogoStyle() {
+        return googleLogoStyle;
     }
 
     /**
@@ -293,9 +329,12 @@ public final class CreateCardsRequestCard {
     }
 
     private boolean equalTo(CreateCardsRequestCard other) {
-        return auxiliaryFields.equals(other.auxiliaryFields)
+        return applePassStyle.equals(other.applePassStyle)
+                && auxiliaryFields.equals(other.auxiliaryFields)
                 && cardColor.equals(other.cardColor)
                 && expiresAt.equals(other.expiresAt)
+                && featuredActions.equals(other.featuredActions)
+                && googleLogoStyle.equals(other.googleLogoStyle)
                 && headerText.equals(other.headerText)
                 && initialStamps.equals(other.initialStamps)
                 && name.equals(other.name)
@@ -319,9 +358,12 @@ public final class CreateCardsRequestCard {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.applePassStyle,
                 this.auxiliaryFields,
                 this.cardColor,
                 this.expiresAt,
+                this.featuredActions,
+                this.googleLogoStyle,
                 this.headerText,
                 this.initialStamps,
                 this.name,
@@ -368,6 +410,13 @@ public final class CreateCardsRequestCard {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
+         * <p>Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'</p>
+         */
+        _FinalStage applePassStyle(Optional<CreateCardsRequestCardApplePassStyle> applePassStyle);
+
+        _FinalStage applePassStyle(CreateCardsRequestCardApplePassStyle applePassStyle);
+
+        /**
          * <p>Up to two extra front-of-pass fields. Blank values are ignored.</p>
          */
         _FinalStage auxiliaryFields(Optional<List<String>> auxiliaryFields);
@@ -387,6 +436,20 @@ public final class CreateCardsRequestCard {
         _FinalStage expiresAt(Optional<String> expiresAt);
 
         _FinalStage expiresAt(String expiresAt);
+
+        /**
+         * <p>Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.</p>
+         */
+        _FinalStage featuredActions(Optional<List<String>> featuredActions);
+
+        _FinalStage featuredActions(List<String> featuredActions);
+
+        /**
+         * <p>How the logo sits on Google Wallet. Defaults to 'round'</p>
+         */
+        _FinalStage googleLogoStyle(Optional<CreateCardsRequestCardGoogleLogoStyle> googleLogoStyle);
+
+        _FinalStage googleLogoStyle(CreateCardsRequestCardGoogleLogoStyle googleLogoStyle);
 
         /**
          * <p>Optional header text displayed on the card</p>
@@ -546,11 +609,17 @@ public final class CreateCardsRequestCard {
 
         private Optional<String> headerText = Optional.empty();
 
+        private Optional<CreateCardsRequestCardGoogleLogoStyle> googleLogoStyle = Optional.empty();
+
+        private Optional<List<String>> featuredActions = Optional.empty();
+
         private Optional<String> expiresAt = Optional.empty();
 
         private Optional<String> cardColor = Optional.empty();
 
         private Optional<List<String>> auxiliaryFields = Optional.empty();
+
+        private Optional<CreateCardsRequestCardApplePassStyle> applePassStyle = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -559,9 +628,12 @@ public final class CreateCardsRequestCard {
 
         @java.lang.Override
         public Builder from(CreateCardsRequestCard other) {
+            applePassStyle(other.getApplePassStyle());
             auxiliaryFields(other.getAuxiliaryFields());
             cardColor(other.getCardColor());
             expiresAt(other.getExpiresAt());
+            featuredActions(other.getFeaturedActions());
+            googleLogoStyle(other.getGoogleLogoStyle());
             headerText(other.getHeaderText());
             initialStamps(other.getInitialStamps());
             name(other.getName());
@@ -935,6 +1007,46 @@ public final class CreateCardsRequestCard {
         }
 
         /**
+         * <p>How the logo sits on Google Wallet. Defaults to 'round'</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage googleLogoStyle(CreateCardsRequestCardGoogleLogoStyle googleLogoStyle) {
+            this.googleLogoStyle = Optional.ofNullable(googleLogoStyle);
+            return this;
+        }
+
+        /**
+         * <p>How the logo sits on Google Wallet. Defaults to 'round'</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "google_logo_style", nulls = Nulls.SKIP)
+        public _FinalStage googleLogoStyle(Optional<CreateCardsRequestCardGoogleLogoStyle> googleLogoStyle) {
+            this.googleLogoStyle = googleLogoStyle;
+            return this;
+        }
+
+        /**
+         * <p>Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage featuredActions(List<String> featuredActions) {
+            this.featuredActions = Optional.ofNullable(featuredActions);
+            return this;
+        }
+
+        /**
+         * <p>Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "featured_actions", nulls = Nulls.SKIP)
+        public _FinalStage featuredActions(Optional<List<String>> featuredActions) {
+            this.featuredActions = featuredActions;
+            return this;
+        }
+
+        /**
          * <p>Card expiry timestamp (ISO 8601)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -994,12 +1106,35 @@ public final class CreateCardsRequestCard {
             return this;
         }
 
+        /**
+         * <p>Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage applePassStyle(CreateCardsRequestCardApplePassStyle applePassStyle) {
+            this.applePassStyle = Optional.ofNullable(applePassStyle);
+            return this;
+        }
+
+        /**
+         * <p>Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "apple_pass_style", nulls = Nulls.SKIP)
+        public _FinalStage applePassStyle(Optional<CreateCardsRequestCardApplePassStyle> applePassStyle) {
+            this.applePassStyle = applePassStyle;
+            return this;
+        }
+
         @java.lang.Override
         public CreateCardsRequestCard build() {
             return new CreateCardsRequestCard(
+                    applePassStyle,
                     auxiliaryFields,
                     cardColor,
                     expiresAt,
+                    featuredActions,
+                    googleLogoStyle,
                     headerText,
                     initialStamps,
                     name,

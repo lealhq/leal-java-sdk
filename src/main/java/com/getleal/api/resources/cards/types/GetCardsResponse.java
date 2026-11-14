@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetCardsResponse.Builder.class)
 public final class GetCardsResponse {
+    private final String applePassStyle;
+
     private final String archivedAt;
 
     private final List<String> auxiliaryFields;
@@ -33,6 +35,12 @@ public final class GetCardsResponse {
     private final int customerCardsCount;
 
     private final String expiresAt;
+
+    private final List<String> featuredActions;
+
+    private final String googleLogoStyle;
+
+    private final GetCardsResponseGoogleWallet googleWallet;
 
     private final String headerText;
 
@@ -79,12 +87,16 @@ public final class GetCardsResponse {
     private final Map<String, Object> additionalProperties;
 
     private GetCardsResponse(
+            String applePassStyle,
             String archivedAt,
             List<String> auxiliaryFields,
             String cardColor,
             String createdAt,
             int customerCardsCount,
             String expiresAt,
+            List<String> featuredActions,
+            String googleLogoStyle,
+            GetCardsResponseGoogleWallet googleWallet,
             String headerText,
             int id,
             int initialStamps,
@@ -107,12 +119,16 @@ public final class GetCardsResponse {
             String textColor,
             String updatedAt,
             Map<String, Object> additionalProperties) {
+        this.applePassStyle = applePassStyle;
         this.archivedAt = archivedAt;
         this.auxiliaryFields = auxiliaryFields;
         this.cardColor = cardColor;
         this.createdAt = createdAt;
         this.customerCardsCount = customerCardsCount;
         this.expiresAt = expiresAt;
+        this.featuredActions = featuredActions;
+        this.googleLogoStyle = googleLogoStyle;
+        this.googleWallet = googleWallet;
         this.headerText = headerText;
         this.id = id;
         this.initialStamps = initialStamps;
@@ -135,6 +151,14 @@ public final class GetCardsResponse {
         this.textColor = textColor;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)
+     */
+    @JsonProperty("apple_pass_style")
+    public String getApplePassStyle() {
+        return applePassStyle;
     }
 
     /**
@@ -183,6 +207,27 @@ public final class GetCardsResponse {
     @JsonProperty("expires_at")
     public String getExpiresAt() {
         return expiresAt;
+    }
+
+    /**
+     * @return Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet
+     */
+    @JsonProperty("featured_actions")
+    public List<String> getFeaturedActions() {
+        return featuredActions;
+    }
+
+    /**
+     * @return How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)
+     */
+    @JsonProperty("google_logo_style")
+    public String getGoogleLogoStyle() {
+        return googleLogoStyle;
+    }
+
+    @JsonProperty("google_wallet")
+    public GetCardsResponseGoogleWallet getGoogleWallet() {
+        return googleWallet;
     }
 
     /**
@@ -365,12 +410,16 @@ public final class GetCardsResponse {
     }
 
     private boolean equalTo(GetCardsResponse other) {
-        return archivedAt.equals(other.archivedAt)
+        return applePassStyle.equals(other.applePassStyle)
+                && archivedAt.equals(other.archivedAt)
                 && auxiliaryFields.equals(other.auxiliaryFields)
                 && cardColor.equals(other.cardColor)
                 && createdAt.equals(other.createdAt)
                 && customerCardsCount == other.customerCardsCount
                 && expiresAt.equals(other.expiresAt)
+                && featuredActions.equals(other.featuredActions)
+                && googleLogoStyle.equals(other.googleLogoStyle)
+                && googleWallet.equals(other.googleWallet)
                 && headerText.equals(other.headerText)
                 && id == other.id
                 && initialStamps == other.initialStamps
@@ -397,12 +446,16 @@ public final class GetCardsResponse {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.applePassStyle,
                 this.archivedAt,
                 this.auxiliaryFields,
                 this.cardColor,
                 this.createdAt,
                 this.customerCardsCount,
                 this.expiresAt,
+                this.featuredActions,
+                this.googleLogoStyle,
+                this.googleWallet,
                 this.headerText,
                 this.id,
                 this.initialStamps,
@@ -431,8 +484,17 @@ public final class GetCardsResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static ArchivedAtStage builder() {
+    public static ApplePassStyleStage builder() {
         return new Builder();
+    }
+
+    public interface ApplePassStyleStage {
+        /**
+         * <p>Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)</p>
+         */
+        ArchivedAtStage applePassStyle(@NotNull String applePassStyle);
+
+        Builder from(GetCardsResponse other);
     }
 
     public interface ArchivedAtStage {
@@ -440,8 +502,6 @@ public final class GetCardsResponse {
          * <p>ISO 8601 timestamp when the card was archived, or null if active</p>
          */
         CardColorStage archivedAt(@NotNull String archivedAt);
-
-        Builder from(GetCardsResponse other);
     }
 
     public interface CardColorStage {
@@ -469,7 +529,18 @@ public final class GetCardsResponse {
         /**
          * <p>ISO 8601 timestamp when the card expires, or null if it does not expire</p>
          */
-        HeaderTextStage expiresAt(@NotNull String expiresAt);
+        GoogleLogoStyleStage expiresAt(@NotNull String expiresAt);
+    }
+
+    public interface GoogleLogoStyleStage {
+        /**
+         * <p>How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)</p>
+         */
+        GoogleWalletStage googleLogoStyle(@NotNull String googleLogoStyle);
+    }
+
+    public interface GoogleWalletStage {
+        HeaderTextStage googleWallet(@NotNull GetCardsResponseGoogleWallet googleWallet);
     }
 
     public interface HeaderTextStage {
@@ -634,15 +705,27 @@ public final class GetCardsResponse {
         _FinalStage addAuxiliaryFields(String auxiliaryFields);
 
         _FinalStage addAllAuxiliaryFields(List<String> auxiliaryFields);
+
+        /**
+         * <p>Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet</p>
+         */
+        _FinalStage featuredActions(List<String> featuredActions);
+
+        _FinalStage addFeaturedActions(String featuredActions);
+
+        _FinalStage addAllFeaturedActions(List<String> featuredActions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements ArchivedAtStage,
+            implements ApplePassStyleStage,
+                    ArchivedAtStage,
                     CardColorStage,
                     CreatedAtStage,
                     CustomerCardsCountStage,
                     ExpiresAtStage,
+                    GoogleLogoStyleStage,
+                    GoogleWalletStage,
                     HeaderTextStage,
                     IdStage,
                     InitialStampsStage,
@@ -665,6 +748,8 @@ public final class GetCardsResponse {
                     TextColorStage,
                     UpdatedAtStage,
                     _FinalStage {
+        private String applePassStyle;
+
         private String archivedAt;
 
         private String cardColor;
@@ -674,6 +759,10 @@ public final class GetCardsResponse {
         private int customerCardsCount;
 
         private String expiresAt;
+
+        private String googleLogoStyle;
+
+        private GetCardsResponseGoogleWallet googleWallet;
 
         private String headerText;
 
@@ -717,6 +806,8 @@ public final class GetCardsResponse {
 
         private String updatedAt;
 
+        private List<String> featuredActions = new ArrayList<>();
+
         private List<String> auxiliaryFields = new ArrayList<>();
 
         @JsonAnySetter
@@ -726,12 +817,16 @@ public final class GetCardsResponse {
 
         @java.lang.Override
         public Builder from(GetCardsResponse other) {
+            applePassStyle(other.getApplePassStyle());
             archivedAt(other.getArchivedAt());
             auxiliaryFields(other.getAuxiliaryFields());
             cardColor(other.getCardColor());
             createdAt(other.getCreatedAt());
             customerCardsCount(other.getCustomerCardsCount());
             expiresAt(other.getExpiresAt());
+            featuredActions(other.getFeaturedActions());
+            googleLogoStyle(other.getGoogleLogoStyle());
+            googleWallet(other.getGoogleWallet());
             headerText(other.getHeaderText());
             id(other.getId());
             initialStamps(other.getInitialStamps());
@@ -753,6 +848,17 @@ public final class GetCardsResponse {
             stripType(other.getStripType());
             textColor(other.getTextColor());
             updatedAt(other.getUpdatedAt());
+            return this;
+        }
+
+        /**
+         * <p>Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("apple_pass_style")
+        public ArchivedAtStage applePassStyle(@NotNull String applePassStyle) {
+            this.applePassStyle = Objects.requireNonNull(applePassStyle, "applePassStyle must not be null");
             return this;
         }
 
@@ -806,8 +912,26 @@ public final class GetCardsResponse {
          */
         @java.lang.Override
         @JsonSetter("expires_at")
-        public HeaderTextStage expiresAt(@NotNull String expiresAt) {
+        public GoogleLogoStyleStage expiresAt(@NotNull String expiresAt) {
             this.expiresAt = Objects.requireNonNull(expiresAt, "expiresAt must not be null");
+            return this;
+        }
+
+        /**
+         * <p>How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("google_logo_style")
+        public GoogleWalletStage googleLogoStyle(@NotNull String googleLogoStyle) {
+            this.googleLogoStyle = Objects.requireNonNull(googleLogoStyle, "googleLogoStyle must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("google_wallet")
+        public HeaderTextStage googleWallet(@NotNull GetCardsResponseGoogleWallet googleWallet) {
+            this.googleWallet = Objects.requireNonNull(googleWallet, "googleWallet must not be null");
             return this;
         }
 
@@ -1044,6 +1168,41 @@ public final class GetCardsResponse {
         }
 
         /**
+         * <p>Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllFeaturedActions(List<String> featuredActions) {
+            if (featuredActions != null) {
+                this.featuredActions.addAll(featuredActions);
+            }
+            return this;
+        }
+
+        /**
+         * <p>Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addFeaturedActions(String featuredActions) {
+            this.featuredActions.add(featuredActions);
+            return this;
+        }
+
+        /**
+         * <p>Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "featured_actions", nulls = Nulls.SKIP)
+        public _FinalStage featuredActions(List<String> featuredActions) {
+            this.featuredActions.clear();
+            if (featuredActions != null) {
+                this.featuredActions.addAll(featuredActions);
+            }
+            return this;
+        }
+
+        /**
          * <p>Up to two extra front-of-pass fields</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1081,12 +1240,16 @@ public final class GetCardsResponse {
         @java.lang.Override
         public GetCardsResponse build() {
             return new GetCardsResponse(
+                    applePassStyle,
                     archivedAt,
                     auxiliaryFields,
                     cardColor,
                     createdAt,
                     customerCardsCount,
                     expiresAt,
+                    featuredActions,
+                    googleLogoStyle,
+                    googleWallet,
                     headerText,
                     id,
                     initialStamps,
